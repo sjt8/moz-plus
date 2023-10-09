@@ -1,0 +1,24 @@
+ {% extends "base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block body %}
+<h2>Add Content</h2>
+ <div class="container m-5">
+     <form class="form" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <h4>Series</h4>
+    <hr>
+    {{ series_form|crispy }}
+    <h4>Season</h4>
+    <hr>
+    {{ season_form|crispy }}
+    <h4>Episodes</h4>
+    <hr>
+    {{ episodes_form|crispy }}
+    <button type="submit" class="btn btn-primary">Add Content</button>
+</form>
+
+ </div>
+
+{% endblock %}

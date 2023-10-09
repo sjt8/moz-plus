@@ -1,0 +1,16 @@
+ {% extends 'base.html' %}
+
+{% block title%} edit movies {% endblock %}
+
+ {% block body%}
+
+
+  <div class='container mg-3'>
+      <h3> edit movie details</h3>
+      <form action="" method="POST" enctype="multipart/form-data" novalidate>
+          {% csrf_token %}
+          {{  edit_movie_form.as_p}}
+          <input type="submit" value="Update post" class="btn btn-success">
+      </form>
+  </div>
+      {% endblock %}

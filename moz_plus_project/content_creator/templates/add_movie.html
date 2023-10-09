@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title%} Add movies {% endblock %}
+
+{% load crispy_forms_tags %}
+ {% block body%}
+
+  <div class='container mg-150'>
+
+      <h3> Add series </h3>
+      <form action="" method="POST" enctype="multipart/form-data" novalidate>
+          {% csrf_token %}
+          {{ movie_form|crispy }}
+         {{ moviepart_form|crispy}}
+          <input type="submit" value="add_movie" class="btn btn-success">
+      </form>
+  </div>
+
+
+      {% endblock %}
