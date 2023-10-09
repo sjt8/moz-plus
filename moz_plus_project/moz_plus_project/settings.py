@@ -39,6 +39,11 @@ INSTALLED_APPS = [
     'subscriber',
     'content_creator',
     'content_management',
+
+    # dependency
+    'crispy_forms',
+    'crispy_bootstrap5',
+
     # defaults
     'django.contrib.admin',
     'django.contrib.auth',
@@ -46,8 +51,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-     'crispy_forms',
-     "crispy_bootstrap5",
 ]
 
 MIDDLEWARE = [
@@ -140,6 +143,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
-CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
-
-CRISPY_TEMPLATE_PACK = "bootstrap5"
+# crispy forms
+CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap5'
+CRISPY_TEMPLATE_PACK = 'bootstrap5'
