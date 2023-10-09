@@ -2,16 +2,21 @@
 
 {% block title%} series detail {% endblock %}
 
-
- <div class='container mg-3'>
-
-     <img width="200" src="{% url 'home_path' %}media/{{series_details.image}}">
-       {% for series in series_details %}
-      <div class="card-body" >
-      <h3>title:{{Series.title}}</h3>
-      <a href="{% url 'home_path' %}series/{{series.id}}">
-          <button type="button" class="btn btn-success">view series</button></a>
-      {% endfor %}
-  </div>
- </div>
- {% block body%}{% endblock %}
+{% block body%}
+ <<div class="container">
+        <h1 class="mt-5 mb-4">Series</h1>
+        <div class="row">
+            {% for series in series_list %}
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <img src="{% url 'subscriber:index' %}media/{{ series.image }}" alt="{{ series.title }}" class="card-img-top">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ series.title }}</h5>
+                            <a href="{% url 'content_creator:view_series' series.id %}" class="btn btn-primary">View</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+ {% endblock %}

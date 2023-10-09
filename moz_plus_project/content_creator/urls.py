@@ -12,5 +12,6 @@ urlpatterns = [
     path("delete_series/<int:passed_id>/",delete_series, name='delete_series'),
     path("delete_series/<int:passed_id>/",delete_Season, name='delete_season'),
     path("delete_series/<int:passed_id>/",delete_episode, name='delete_episode'),
+    path('series/<int:passed_id>/', views.series_list, name='view_series'),
 
 ]

@@ -164,3 +164,11 @@ def search_series(request):
         Series_list = Series.objects.filter(title__icontains=search_term)
     else:
         series_list = Series.objects.all()
+
+# listing the series in series
+
+
+def series_list(request, passed_id):
+    series_list = Series.objects.all()
+    context = {'series_list': series_list}
+    return render(request, 'series_page.html', context)
