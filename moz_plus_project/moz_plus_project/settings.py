@@ -42,6 +42,7 @@ INSTALLED_APPS = [
 
     # dependency
     'crispy_forms',
+    'crispy_bootstrap5',
 
     # defaults
     'django.contrib.admin',
