@@ -22,19 +22,32 @@
     </div>
     <div class="card bg-secondary">
         <div class="d-flex justify-content-around card-body p-2">
-            <h4 class="align-self-start">Season:</h4>
+
             <div class="dropdown">
                 <button class="btn btn-dark dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                        aria-expanded="false">
-                    Episodes
+                        aria-expanded="false">Season
                 </button>
                 <ul class="dropdown-menu">
                     {% for season in content_season%}
-                    <li><a class="dropdown-item" href="?season={{season.id}}">Season {{season.season_no}}</a></li>
+                    <li>
+                        <a class="dropdown-item" href="?season={{season.id}}">Season {{season.season_no}}</a>
+                    </li>
                     {% endfor %}
                 </ul>
             </div>
-            <a href="" class="btn btn-danger">Delete</a>
+            <a href="{% url 'content_creator:edit_season' season_id %}" class="btn btn-secondary ">Edit</a>
+            <a href="{% url 'content_creator:delete_season' season_id%}" class="btn btn-danger">Delete</a>
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                    Add Form
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="{% url 'content_creator:add_season' %}">Season
+                    </a></li>
+                    <li><a class="dropdown-item" href="{% url 'content_creator:add_episode'%}">Episode</a></li>
+                </ul>
+            </div>
         </div>
     </div>
 
@@ -50,8 +63,11 @@
                     <div class="card-body">
                         <h5 class="card-title">{{episode.title}}</h5>
                         <p class="card-text">{{episode.plot|slice:":50"}}</p>
-                        <p class="card-text"><small class="text-body-secondary">{{content_series.created_date|date:"M d, Y" }}</small></p>
-                        <a href="" class="btn btn-danger">Delete</a>
+                        <p class="card-text"><small class="text-body-secondary">
+                            {{content_series.created_date|date:"M d, Y" }}</small></p>
+                        <a href="{% url 'content_creator:delete_episode' episode.id%}" class="btn btn-danger">Delete</a>
+                        <a href="{% url 'content_creator:edit_episode' episode.id %}" class="btn btn-success">Edit Episode</a>
+
 
                     </div>
                 </div>
