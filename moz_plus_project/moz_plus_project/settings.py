@@ -35,6 +35,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     # my apps
+    'home',
     'super_admin',
     'subscriber',
     'content_creator',

@@ -1,0 +1,67 @@
+{% extends 'home/base.html' %}
+
+{% block body %}
+{% include 'home/navbar.html' %}
+<div class="container">
+    <div class="card text-bg-dark">
+        <img src="{{url}}/media/{{content_series.image}}" class="card-img" alt="{{content_series.slug}}">
+        <div class="card-img-overlay">
+            <h5 class="card-title">{{content_series.title}}</h5>
+            <p class="card-text">{{content_series.overview}}...</p>
+            <p class="card-text"><small>{{content_series.created_date|date:"M d, Y" }}</small></p>
+        </div>
+    </div>
+    <div class="card bg-secondary">
+        <div class="d-flex justify-content-around card-body p-2">
+            <h4 class="align-self-start">Season:</h4>
+            <div class="dropdown">
+                <button class="btn btn-dark dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                    Episodes
+                </button>
+                <ul class="dropdown-menu">
+                    {% for season in content_season%}
+                    <li><a class="dropdown-item" href="?season={{season.id}}">Season {{season.season_no}}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        {% for episode in content_episodes %}
+        <div class="card mb-3 text-dark" style="max-width: 540px;">
+            <div class="row g-0">
+                <div class="col-md-4">
+                    <img src="{{url}}/media/{{episode.thumbnail}}" class="img-fluid rounded-start"
+                         alt="{{episode.slug}}">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">{{episode.title}}</h5>
+                        <p class="card-text">{{episode.plot|slice:":50"}}</p>
+                        <p class="card-text"><small class="text-body-secondary">
+                            {{content_series.created_date|date:"M d,Y" }}
+                        </small></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="container-fluid py-2">
+    <h2 class="font-weight-light">Trailers</h2>
+    <div class="d-flex flex-row flex-nowrap overflow-scroll">
+        {% for trailer in content_season_trailer %}
+        <div class="embed-responsive embed-responsive-4by3 m-5">
+            <iframe class="embed-responsive-item" src="{{trailer.url}}"
+                    allowfullscreen></iframe>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+</div>
+
+{% endblock body %}
