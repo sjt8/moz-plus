@@ -1,4 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
+from django import forms
+from .models import MoviePart, Series, Season, Episodes, Movie
+from .forms import AddMoviesForm, AddMoviePartForm, EditMovieForm, EditEpisodesForm, EditSeasonForm, EditSeiresForm
+from .forms import SeriesForm, SeasonForm, EpisodesForm
+from crispy_bootstrap5.bootstrap5 import FloatingField
+
 
 from . import models
 

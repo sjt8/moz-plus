@@ -98,7 +98,7 @@ class Season(models.Model):
     overview = models.TextField(max_length=500, blank=True)
     studio = models.ManyToManyField('super_admin.Studio')
     language = models.ManyToManyField('super_admin.Language')
-    release_date = models.DateTimeField(auto_now_add=True)
+    release_date = models.DateTimeField()
     thumbnail = models.ImageField(upload_to='content_creator/season/images')
     is_enable = models.BooleanField(default=True)
     created_date = models.DateTimeField(auto_now_add=True)
