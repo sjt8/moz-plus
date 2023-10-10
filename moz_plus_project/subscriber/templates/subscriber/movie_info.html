@@ -1,0 +1,61 @@
+{% extends 'home/base.html' %}
+
+{% block body %}
+{% include 'home/navbar.html' %}
+<div class="container">
+    <div class="card text-bg-dark">
+        <img style="width: 200px; height: auto;" src="{{url}}/media/{{content_movies.image}}" class="card-img" alt="{{content_movies.slug}}">
+        <div class="card-img-overlay" style="background-color: rgba(0, 0, 0, 0.7);">
+            <h5 class="card-title">{{content_movies.title}}</h5>
+            <p class="card-text">{{content_movies.overview}}...</p>
+            <p class="card-text"><small>{{content_movies.created_date|date:"M d, Y" }}</small></p>
+        </div>
+    </div>
+
+    <div class="container">
+        {% for movie_part in content_movies_part %}
+
+        <div class="card mb-3 text-light bg-secondary" style="max-width: 700px;">
+            <div class="row g-0">
+                <div class="col-md-3">
+                    <img src="{{url}}/media/{{movie_part.thumbnail}}" class="img-fluid rounded-start"
+                         alt="{{movie_part.slug}}">
+                    <div class="d-flex justify-content-between mt-2">
+                            <a href="#" class="btn btn-dark me-2 btn-lg  ">➕</a>
+                            <a href="{{ movie_part.video }}" class="btn btn-dark btn-lg ">▶PLAY</a>
+                    </div>
+                </div>
+                <div class="col-md-20">
+                    <div class="card-body">
+                        <h4 class="card-title">{{movie_part.title}}</h4>
+                        <p class="card-text">{{movie_part.plot}}</p>
+
+                        {% for person in movie_part.person.all %}
+                        {{ person.role.name }}: {{ person.show_person.first_name }}{% if not forloop.last %}, {% endif %}
+                        {% endfor %}
+                        <p class="card-text">{{movie_part.studio}}</p>
+                        <p class="card-text"><small class="text-body-secondary">
+                            {{movie_part.release_date|date:"Y" }}
+                        </small></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="container-fluid py-2">
+    <h2 class="font-weight-light">Trailers</h2>
+    <div class="d-flex flex-row flex-nowrap overflow-scroll">
+        {% for trailer in content_movie_trailer %}
+        <div class="embed-responsive embed-responsive-4by3 m-5">
+            <iframe class="embed-responsive-item" src="{{trailer.url}}"
+                    allowfullscreen></iframe>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+</div>
+
+{% endblock body %}

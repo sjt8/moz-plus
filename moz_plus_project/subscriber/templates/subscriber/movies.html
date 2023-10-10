@@ -1,0 +1,41 @@
+{% extends 'home/base.html' %}
+
+{% block body  %}
+{% include 'home/navbar.html' %}
+    <h2>Continue Watching</h2>
+    <div class="row">
+        {% for movie in continue_movies %}
+            <div class="col-md-3">
+                <img width="100" src="{{url}}/media/{{ movie.image }}"><br/>
+                <p>{{ movie.genre }} {{ movie.duration }}</p>
+                <a href="{% url 'subscriber:movie_info' %}moviesinfo/{{ movie.id }}">
+                    <button type="button" class="btn btn-secondary">View info and details</button>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+    <h2>Recommended for you..</h2>
+    <div class="row">
+        {% for movie in content_movies %}
+            <div class="col-md-3">
+                <img width="100" src="{{url}}/media/{{ movie.image}}"><br/>
+                <p>{{ movie.genre}} {{ movie.duration }}</p>
+                <a href="{% url 'subscriber:movie_info' movie.id %}">
+                    <button type="button" class="btn btn-secondary">View info and details</button>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+    <h2>Trending Movies</h2>
+    <div class="row">
+        {% for movie in trending_movies %}
+            <div class="col-md-3">
+                <img width="100" src="{{url}}/media/{{ movie.image }}"><br/>
+                <p>{{ movie.genre }} {{ movie.duration }}</p>
+                <a href="{% url 'subscriber:movie_info' %}moviesinfo/{{ movie.id }}">
+                    <button type="button" class="btn btn-secondary">View info and details</button>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
