@@ -1,0 +1,25 @@
+{% extends 'home/base.html' %}
+
+{% block body %}
+{% include 'super_admin/navbar.html' %}
+
+<div class="row">
+    <div class="col-3">
+        {% include 'super_admin/sidebar.html' %}
+
+    </div>
+    <div class="col-9">
+        {% for value in values%}
+            <div class="card text-black my-2" style="max-width: 20rem;">
+                <div class="card-body">
+                    <div class="card-title">
+                        {{value.name}}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+    </div>
+</div>
+
+
+{% endblock body %}

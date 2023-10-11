@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     {% load bootstrap5 %}
     {% bootstrap_css %}
-    {% bootstrap_javascript %}
     {% block title %} {% endblock title %}
     {% block style %} {% endblock style %}
 </head>
 <body class="bg-dark text-light">
 {% block body %} {% endblock body %}
+{% bootstrap_javascript %}
 </body>
 </html>
