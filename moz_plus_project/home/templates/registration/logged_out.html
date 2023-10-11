@@ -1,0 +1,21 @@
+{% extends 'home/base.html' %}
+
+{% block title %} Logout {% endblock title %}
+
+{% block body %}
+
+<div class="container m-5">
+    <p>You have been logged out.</p>
+    <a href="{% url 'home:home' %}">
+        <button type="button" class="btn btn-primary" >
+            Home
+        </button>
+    </a>
+    <a href="{% url 'home:login' %}">
+        <button type="button" class="btn btn-primary" >
+            Login
+        </button>
+    </a>
+</div>
+
+{% endblock body %}

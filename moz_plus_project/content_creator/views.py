@@ -11,19 +11,25 @@ from . import models
 
 # Create your views here.
 def content_creator(request):
-    return render(request, 'content_creator/content_creator.html')
+    moz_user = models.ContentCreator.objects.get(user=request.user)
+    return render(request, 'content_creator/content_creator.html', {'moz_user': moz_user})
 
 
 def series(request):
+    moz_user = models.ContentCreator.objects.get(user=request.user)
+
     content_series = models.Series.objects.all()
 
     context = {
-        'content_series': content_series
+        'content_series': content_series,
+        'moz_user': moz_user
     }
     return render(request, 'content_creator/series.html', context)
 
 
 def series_details(request, series_id):
+    moz_user = models.ContentCreator.objects.get(user=request.user)
+
     content_series = models.Series.objects.get(id=series_id)
     content_season = models.Season.objects.filter(series_id=series_id)
 
@@ -41,6 +47,7 @@ def series_details(request, series_id):
         'content_season': content_season,
         'content_episodes': content_episodes,
         'season_id': season_id,
+        'moz_user': moz_user,
     }
     return render(request, 'content_creator/series_details.html', context)
 
@@ -132,3 +139,14 @@ def add_series(request):
         add_series_form = SeriesForm()
 
     return render(request, 'content_creator/add_series.html', {'add_series_form': add_series_form })
+
+def movies(request):
+    moz_user = models.ContentCreator.objects.get(user=request.user)
+
+    content_movies = models.Movie.objects.all()
+
+    context = {
+        'content_movies': content_movies,
+        'moz_user': moz_user
+    }
+    return render(request, 'content_creator/movies.html', context)
