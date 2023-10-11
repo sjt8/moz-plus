@@ -24,7 +24,7 @@ class ContentRating(models.Model):
     age = models.PositiveSmallIntegerField()
 
     def __str__(self):
-        return f'{self.name}: {self.age}'
+        return self.name
 
 
 class Genre(models.Model):

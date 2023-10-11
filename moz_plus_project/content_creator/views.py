@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django import forms
 from .models import MoviePart, Series, Season, Episodes, Movie
-from .forms import AddMoviesForm, EditMoviePartForm,AddMoviePartForm,EditEpisodesForm, EditSeasonForm, EditSeiresForm
+from .forms import AddMoviesForm,EditMovieForm,EditMoviePartForm,AddMoviePartForm,EditEpisodesForm, EditSeasonForm, EditSeiresForm
 from .forms import SeriesForm, SeasonForm, EpisodesForm
 from crispy_bootstrap5.bootstrap5 import FloatingField
 
@@ -179,7 +179,7 @@ def add_movies(request):
             new_movies = add_movies_form.save(commit=False)
             new_movies.post_author = request.user
             new_movies.save()
-            return redirect('content_creator:movie')
+            return redirect('content_creator:movies')
     else:
         add_movies_form = AddMoviesForm()
 
@@ -199,31 +199,51 @@ def add_moviespart(request):
 
     return render(request, 'content_creator/add_moviepart.html', {'add_moviespart_form': add_moviespart_form})
 
+def edit_movie(request, passed_id):
+    # get the get method var and passing  that along with the model
+    movie_details = get_object_or_404(Movie,id=passed_id)
+    edit_movie_form =EditMovieForm (request.POST or None, request.FILES or None,instance=movie_details)
+    if edit_movie_form.is_valid():
+        new_movie = edit_movie_form.save(commit=False)
+        new_movie.save()
+        return redirect('content_creator:movies')
+
+    return render(request, 'content_creator/edit_movies.html', context={'edit_movie_form':edit_movie_form})
 
 
 
 def edit_moviepart(request, passed_id):
     # get the get method var and passing  that along with the model
     moviepart_details = get_object_or_404(MoviePart,id=passed_id)
-    edit_moviepart_form =EditMoviePartForm (request.POST or None, request.FILES or None,instance=moviepart_details)
+    edit_moviepart_form =EditMoviePartForm(request.POST or None, request.FILES or None,instance=moviepart_details)
     if edit_moviepart_form.is_valid():
         new_moviepart = edit_moviepart_form.save(commit=False)
         new_moviepart.save()
-        return redirect('content_creator:movie_details', new_moviepart.movies.id)
+        return redirect('content_creator:movies_details', new_moviepart.movie.id)
 
     return render(request, 'content_creator/edit_moviepart.html', context={'edit_moviepart_form': edit_moviepart_form})
 
 
-def delete_moviepart(request, moviepart_id):
+def delete_moviepart(request,moviepart_id):
     content_moviepart = models.MoviePart.objects.get(id=moviepart_id)
-    movie_id = content_moviepart.movie.id
+    movie = content_moviepart.movie.id
     content_moviepart.delete()
-    return redirect('content_creator:movie_details', movie_id)
+    return redirect('content_creator:movies_details', movie)
 
 
 
-def delete_movie(request, passed_id):
-    # get the get method var and passing  that along with the model
-    movie_details = get_object_or_404(Movie, id=passed_id)
-    movie_details.delete()
-    return redirect('content_creator:movie')
+def delete_movie(request,movie_id):
+    content_movie = models.Movie.objects.get(id=movie_id)
+    content_movie.delete()
+    return redirect('content_creator:movies')
+
+
+# search term for movie
+def search_list(request):
+    # get the search term posted from the form with name 'searchmovie'
+    search_term = request.GET.get('searchmovie')
+    if search_term:
+        # if there is a vaild search term ,filter the list of objects with it
+        search_list = Movie.objects.filter(title__icontains=search_term)
+    else:
+        search_list = Movie.objects.all()
