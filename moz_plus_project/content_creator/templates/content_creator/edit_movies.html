@@ -1,0 +1,17 @@
+{% extends 'home/base.html' %}
+
+{% block title%} Edit Season {% endblock %}
+{% load crispy_forms_tags %}
+
+ {% block body%}
+
+
+  <div class='container mg-3'>
+
+      <form action="" method="POST" enctype="multipart/form-data" novalidate>
+          {% csrf_token %}
+          {{edit_movie_form |crispy}}
+          <input type="submit" value="Update post" class="btn btn-success">
+      </form>
+  </div>
+      {% endblock %}
