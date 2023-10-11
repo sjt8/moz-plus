@@ -8,41 +8,47 @@
         <div class="card-img-overlay" style="background-color: rgba(0, 0, 0, 0.7);">
             <h5 class="card-title">{{content_movies.title}}</h5>
             <p class="card-text">{{content_movies.overview}}...</p>
-            <p class="card-text"><small>{{content_movies.created_date|date:"M d, Y" }}</small></p>
         </div>
     </div>
 
-    <div class="container">
-        {% for movie_part in content_movies_part %}
-
+<div class="container">
+    {% for movie_part in content_movies_part %}
         <div class="card mb-3 text-light bg-secondary" style="max-width: 700px;">
             <div class="row g-0">
                 <div class="col-md-3">
-                    <img src="{{url}}/media/{{movie_part.thumbnail}}" class="img-fluid rounded-start"
-                         alt="{{movie_part.slug}}">
+                    <img src="{{url}}/media/{{movie_part.thumbnail}}" class="img-fluid rounded-start" alt="{{movie_part.slug}}">
                     <div class="d-flex justify-content-between mt-2">
-                            <a href="#" class="btn btn-dark me-2 btn-lg  ">➕</a>
-                            <a href="{{ movie_part.video }}" class="btn btn-dark btn-lg ">▶PLAY</a>
+                        <a href="{% url 'subscriber:mylist' user.id %}" class="btn btn-dark me-2 btn-lg  ">➕</a>
+                        <a href="{% url 'home:home' %}media/{{ movie_part.video}}" class="btn btn-dark btn-lg ">▶PLAY</a>
                     </div>
                 </div>
-                <div class="col-md-20">
+                <div class="col-md-9">
                     <div class="card-body">
-                        <h4 class="card-title">{{movie_part.title}}</h4>
+                        <div class="d-flex justify-content-between">
+                            <h4 class="card-title">{{movie_part.title}}</h4>
+                            <p class="card-text">
+                                <small class="text-body-secondary">
+                                    {{movie_part.release_date|date:"Y" }} |{{ movie_part.duration }}
+                                </small>
+                            </p>
+                        </div>
                         <p class="card-text">{{movie_part.plot}}</p>
-
+                        <p class="card-text">{{movie_part.country}} | {{movie_part.language}}</p>
+                        <p class="card-text">Genre:{{movie_part.genre}}</p>
                         {% for person in movie_part.person.all %}
-                        {{ person.role.name }}: {{ person.show_person.first_name }}{% if not forloop.last %}, {% endif %}
+                            {{ person.role.name }}: {{ person.show_person.first_name }}{% if not forloop.last %}, {% endif %}
                         {% endfor %}
                         <p class="card-text">{{movie_part.studio}}</p>
-                        <p class="card-text"><small class="text-body-secondary">
-                            {{movie_part.release_date|date:"Y" }}
-                        </small></p>
+                        {% for rate in rating %}
+                            <p class="card-text">{{rate.get_rating_display}}</p>
+                        {% endfor %}
                     </div>
                 </div>
             </div>
         </div>
-        {% endfor %}
-    </div>
+    {% endfor %}
+</div>
+
 
     <div class="container-fluid py-2">
     <h2 class="font-weight-light">Trailers</h2>

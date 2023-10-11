@@ -2,6 +2,11 @@
 
 {% block body  %}
 {% include 'home/navbar.html' %}
+<div class="card bg-secondary">
+    <div class="d-flex justify-content-around card-body p-2">
+        <h4 class="align-self-start">Movies:</h4>
+    </div>
+</div>
     <h2>Continue Watching</h2>
     <div class="row">
         {% for movie in continue_movies %}
@@ -9,19 +14,20 @@
                 <img width="100" src="{{url}}/media/{{ movie.image }}"><br/>
                 <p>{{ movie.genre }} {{ movie.duration }}</p>
                 <a href="{% url 'subscriber:movie_info' %}moviesinfo/{{ movie.id }}">
-                    <button type="button" class="btn btn-secondary">View info and details</button>
+                    <button type="button" class="btn btn-secondary">View more</button>
                 </a>
             </div>
         {% endfor %}
     </div>
-    <h2>Recommended for you..</h2>
+
+    <h2>Recommended for you</h2>
     <div class="row">
         {% for movie in content_movies %}
-            <div class="col-md-3">
-                <img width="100" src="{{url}}/media/{{ movie.image}}"><br/>
+            <div class="col-md-3 mb-4 big-item">
+                <img width="150" src="{{url}}/media/{{ movie.image}}"><br/>
                 <p>{{ movie.genre}} {{ movie.duration }}</p>
                 <a href="{% url 'subscriber:movie_info' movie.id %}">
-                    <button type="button" class="btn btn-secondary">View info and details</button>
+                    <button type="button" class="btn btn-secondary">View more</button>
                 </a>
             </div>
         {% endfor %}

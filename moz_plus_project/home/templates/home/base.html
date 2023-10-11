@@ -4,11 +4,21 @@
     <meta charset="UTF-8">
     {% load bootstrap5 %}
     {% bootstrap_css %}
-    {% bootstrap_javascript %}
     {% block title %} {% endblock title %}
-    {% block style %} {% endblock style %}
+    {% block style %}
+                <style>
+                            .big-item {
+                                transition: transform 0.3s; /* Add transition for smooth effect */
+                            }
+
+                            .big-item:hover {
+                                transform: scale(1.1); /* Enlarge the element on hover */
+                            }
+                </style>
+    {% endblock style %}
 </head>
 <body class="bg-dark text-light">
 {% block body %} {% endblock body %}
+{% bootstrap_javascript %}
 </body>
 </html>
