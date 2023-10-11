@@ -1,0 +1,18 @@
+   {% extends 'home/base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block body %}
+  <div class="container m-5">
+     <form class="form" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <h2>series</h2>
+    <hr>
+    {{ edit_series_form|crispy }}
+
+    <button type="submit" class="btn btn-primary">Edit </button>
+</form>
+
+ </div>
+
+{% endblock %}

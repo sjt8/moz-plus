@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django import forms
 from .models import MoviePart, Series, Season, Episodes, Movie
-from .forms import AddMoviesForm,EditMovieForm,EditMoviePartForm,AddMoviePartForm,EditEpisodesForm, EditSeasonForm, EditSeiresForm
+from .forms import AddMoviesForm,EditMovieForm,EditMoviePartForm,AddMoviePartForm,EditEpisodesForm, EditSeasonForm,EditSerieForm,AddShowPerson
 from .forms import SeriesForm, SeasonForm, EpisodesForm
 from crispy_bootstrap5.bootstrap5 import FloatingField
 
@@ -238,12 +238,31 @@ def delete_movie(request,movie_id):
     return redirect('content_creator:movies')
 
 
-# search term for movie
-def search_list(request):
-    # get the search term posted from the form with name 'searchmovie'
-    search_term = request.GET.get('searchmovie')
-    if search_term:
-        # if there is a vaild search term ,filter the list of objects with it
-        search_list = Movie.objects.filter(title__icontains=search_term)
+def edit_series(request, passed_id):
+    # get the get method var and passing  that along with the model
+    series_details = get_object_or_404(Series,id=passed_id)
+    edit_series_form =EditSerieForm (request.POST or None, request.FILES or None,instance=series_details )
+    if edit_series_form.is_valid():
+        new_series = edit_series_form.save(commit=False)
+        new_series.save()
+        return redirect('content_creator:series')
+
+    return render(request, 'content_creator/edit_series.html', context={'edit_series_form':edit_series_form})
+
+def delete_series(request,series_id):
+    content_series = models. Series.objects.get(id=series_id)
+    content_series.delete()
+    return redirect('content_creator:series')
+
+def add_showperson(request):
+    if request.method == 'POST':
+        add_showperson_form =AddShowPerson(request.POST, request.FILES)
+        if add_showperson_form.is_valid():
+            new_showperson = add_showperson_form.save(commit=False)
+            new_showperson.post_author = request.user
+            new_showperson.save()
+            return redirect('content_creator:')
     else:
-        search_list = Movie.objects.all()
+        add_showperson_form = AddShowPerson()
+
+    return render(request, 'content_creator/add_showperson.html', {'add_showperson_form':add_showperson_form})

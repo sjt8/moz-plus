@@ -1,6 +1,6 @@
 
 from django import forms
-from .models import MoviePart,Series,Season,Episodes,Movie
+from .models import MoviePart,Series,Season,Episodes,Movie,ShowPerson
 
 
 class AddMoviesForm(forms.ModelForm):
@@ -11,7 +11,16 @@ class AddMoviesForm(forms.ModelForm):
 class AddMoviePartForm(forms.ModelForm):
     class Meta:
         model = MoviePart
-        fields=('title','slug','movie','part_no','genre','studio','plot','person','release_date','duration','content_rating','country','language','thumbnail','video')
+        fields=('title','slug','movie','part_no','genre','studio','plot','release_date','duration','content_rating','country','language','thumbnail','video')
+
+        # Add a ModelMultipleChoiceField to select ShowPerson instances
+
+    persons = forms.ModelMultipleChoiceField(
+        queryset=ShowPerson.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+        required=False,  # Set to True if selecting persons is mandatory
+    )
+
 
 class EditMovieForm(forms.ModelForm):
     class Meta:
@@ -45,10 +54,10 @@ class EpisodesForm(forms.ModelForm):
 
 
 # this the class for editing the series
-class EditSeiresForm(forms.ModelForm):
+class EditSerieForm(forms.ModelForm):
     class Meta:
         model= Series
-        fields =('title','slug', 'overview','genre','country','image')
+        fields =('title','slug','overview','genre','country','image')
 
 # this the class for editing the season
 class EditSeasonForm(forms.ModelForm):
@@ -61,3 +70,7 @@ class EditEpisodesForm(forms.ModelForm):
     class Meta:
         model=Episodes
         fields =('title','slug','season','episode_no','plot','person','release_date','duration','thumbnail','video')
+class AddShowPerson(forms.ModelForm):
+    class Meta:
+        model=ShowPerson
+        fields =('first_name','last_name','dob','country','image')
