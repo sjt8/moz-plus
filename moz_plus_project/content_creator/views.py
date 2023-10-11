@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django import forms
 from .models import MoviePart, Series, Season, Episodes, Movie
-from .forms import AddMoviesForm, AddMoviePartForm, EditMovieForm, EditEpisodesForm, EditSeasonForm, EditSeiresForm
+from .forms import AddMoviesForm, EditMoviePartForm,AddMoviePartForm,EditEpisodesForm, EditSeasonForm, EditSeiresForm
 from .forms import SeriesForm, SeasonForm, EpisodesForm
 from crispy_bootstrap5.bootstrap5 import FloatingField
 
@@ -150,3 +150,80 @@ def movies(request):
         'moz_user': moz_user
     }
     return render(request, 'content_creator/movies.html', context)
+
+def movie_details(request,movie_id):
+    content_movie = models.Movie.objects.get(id=movie_id)
+    content_moviepart = models.MoviePart.objects.filter(movie_id=movie_id)
+
+    if request.GET.get('moviepart'):
+        moviepart_id = request.GET.get('moviepart')
+    elif content_moviepart.first():
+        moviepart_id = content_moviepart.first().id
+    else:
+        moviepart_id = 0
+
+
+    context = {
+        'content_movie': content_movie,
+        'content_moviepart': content_moviepart,
+
+        'moviepart_id': moviepart_id,
+    }
+    return render(request, 'content_creator/movie_details.html', context)
+
+
+def add_movies(request):
+    if request.method == 'POST':
+        add_movies_form =AddMoviesForm(request.POST, request.FILES)
+        if add_movies_form.is_valid():
+            new_movies = add_movies_form.save(commit=False)
+            new_movies.post_author = request.user
+            new_movies.save()
+            return redirect('content_creator:movie')
+    else:
+        add_movies_form = AddMoviesForm()
+
+    return render(request, 'content_creator/add_movies.html', {'add_movies_form': add_movies_form})
+
+
+def add_moviespart(request):
+    if request.method == 'POST':
+        add_moviespart_form =AddMoviePartForm(request.POST, request.FILES)
+        if add_moviespart_form.is_valid():
+            new_moviepart= add_moviespart_form.save(commit=False)
+            new_moviepart.post_author = request.user
+            new_moviepart.save()
+            return redirect('content_creator:movies_details', new_moviepart.movie.id)
+    else:
+        add_moviespart_form = AddMoviePartForm()
+
+    return render(request, 'content_creator/add_moviepart.html', {'add_moviespart_form': add_moviespart_form})
+
+
+
+
+def edit_moviepart(request, passed_id):
+    # get the get method var and passing  that along with the model
+    moviepart_details = get_object_or_404(MoviePart,id=passed_id)
+    edit_moviepart_form =EditMoviePartForm (request.POST or None, request.FILES or None,instance=moviepart_details)
+    if edit_moviepart_form.is_valid():
+        new_moviepart = edit_moviepart_form.save(commit=False)
+        new_moviepart.save()
+        return redirect('content_creator:movie_details', new_moviepart.movies.id)
+
+    return render(request, 'content_creator/edit_moviepart.html', context={'edit_moviepart_form': edit_moviepart_form})
+
+
+def delete_moviepart(request, moviepart_id):
+    content_moviepart = models.MoviePart.objects.get(id=moviepart_id)
+    movie_id = content_moviepart.movie.id
+    content_moviepart.delete()
+    return redirect('content_creator:movie_details', movie_id)
+
+
+
+def delete_movie(request, passed_id):
+    # get the get method var and passing  that along with the model
+    movie_details = get_object_or_404(Movie, id=passed_id)
+    movie_details.delete()
+    return redirect('content_creator:movie')

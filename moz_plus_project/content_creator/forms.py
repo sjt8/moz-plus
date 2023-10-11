@@ -11,10 +11,13 @@ class AddMoviesForm(forms.ModelForm):
 class AddMoviePartForm(forms.ModelForm):
     class Meta:
         model = MoviePart
-        fields=('title','slug','movie','part_no','genre','plot','person','release_date','duration','content_rating','country','language')
+        fields=('title','slug','movie','part_no','genre','studio','plot','person','release_date','duration','content_rating','country','language')
 
-
-class EditMovieForm(forms.ModelForm):
+class EditMoviesForm(forms.ModelForm):
+    class Meta:
+        model = Movie
+        fields=('title','slug','overview','image')
+class EditMoviePartForm(forms.ModelForm):
     class Meta:
         model = MoviePart
         fields=('title','slug','movie','part_no','genre','plot','person','release_date','duration','content_rating','country','language')
