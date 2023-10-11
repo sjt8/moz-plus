@@ -44,17 +44,18 @@ def movie_info(request,passed_id):
     content_movies_part = apps.get_model(app_label='content_creator', model_name='MoviePart').objects.filter(movie_id=passed_id)
     movie_part_id = request.GET.get('movie-part') or content_movies_part.first().id
     content_movie_trailer = apps.get_model(app_label='content_creator', model_name='MovieTrailer').objects.filter(movie_part_id=movie_part_id)
-
+    rating = apps.get_model(app_label='content_management', model_name='ShowRatingMoviePart').objects.filter(subscriber_id= request.user.id,movie_part_id=passed_id).values
     context = {
         'content_movies': content_movies,
         'content_movies_part': content_movies_part,
         'content_movie_trailer': content_movie_trailer,
         'moz_user': moz_user,
+        'rating':rating,
     }
     return render(request, 'subscriber/movie_info.html', context)
 
-def watchlist(request):
-    mylist = apps.get_model('content_management', 'Watchlist').objects.all()
+def watchlist(request,user_id):
+    mylist = apps.get_model('content_management', 'Watchlist').objects.get(subscriber_id= user_id)
 
     return render(request, "mylist.html", {"mylist": mylist, })
 
@@ -62,9 +63,10 @@ def series(request):
     moz_user = models.Subscriber.objects.get(user=request.user)
 
     content_series = apps.get_model(app_label='content_creator', model_name='Series').objects.all()
-
+    trending_series = apps.get_model(app_label='content_management', model_name='ShowCollectionSeries').objects.all()
     context = {
         'content_series': content_series,
+        'trending_series':trending_series,
         'moz_user': moz_user,
     }
     return render(request, 'subscriber/series.html', context)

@@ -1,0 +1,16 @@
+% extends 'base.html' %}
+{% block body  %}
+     {% for each in mylist %}
+            <img width="200" src="media/{{each.image}}"><br/>
+            {% if each.movie is None %}
+            <a href="{% url 'subscriber:home_path' %}movieinfo/{{movies.id}}">
+                <button type="button" class="btn btn-secondary">View info and details</button>
+            </a>
+            {% else %}
+            <a href="{% url 'subscriber:home_path' %}seriesinfo/{{series.id}}">
+                <button type="button" class="btn btn-secondary">View info and details</button>
+            </a>
+             <br><br>
+            {% endif %}
+     {% endfor %}
+{% endblock %}
