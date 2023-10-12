@@ -1,11 +1,18 @@
 from django.shortcuts import render
 from django.apps import apps
+from django.contrib.auth.decorators import login_required
 
+from django.contrib import messages
+from django.shortcuts import redirect
 from . import models
 
 
 # Create your views here.
+
+
+@login_required
 def subscriber(request):
+
     moz_user = models.Subscriber.objects.get(user=request.user)
 
     movies = apps.get_model('content_creator', 'Movie').objects.all()
@@ -19,13 +26,18 @@ def subscriber(request):
 
     return render(request, 'subscriber/subscriber.html', context)
 
+@login_required
 def movies(request):
     moz_user = models.Subscriber.objects.get(user=request.user)
 
     content_movies = apps.get_model(app_label='content_creator', model_name='Movie').objects.all()
-    continue_movies = apps.get_model(app_label='content_management', model_name='ContinueWatchingMoviePart').objects.all()
     recommended_movies = apps.get_model(app_label='content_management', model_name='FavouriteMovie').objects.all()
     trending_movies = apps.get_model(app_label='content_management', model_name='ShowCollectionMovie').objects.all()
+    if apps.get_model(app_label='content_management', model_name='ContinueWatchingMoviePart').objects.filter(subscriber_id= request.user.id).exists():
+        continue_movies = apps.get_model(app_label='content_management',
+                                         model_name='ContinueWatchingMoviePart').objects.filter(subscriber_id=request.user.id)
+    else:
+        continue_movies = None
 
     context = {
         'content_movies': content_movies,
@@ -37,6 +49,7 @@ def movies(request):
     return render(request, 'subscriber/movies.html', context)
 
 
+@login_required
 def movie_info(request,passed_id):
     moz_user = models.Subscriber.objects.get(user=request.user)
 
@@ -54,11 +67,17 @@ def movie_info(request,passed_id):
     }
     return render(request, 'subscriber/movie_info.html', context)
 
+
+@login_required
 def watchlist(request,user_id):
-    mylist = apps.get_model('content_management', 'Watchlist').objects.get(subscriber_id= user_id)
+    moz_user = models.Subscriber.objects.get(user=request.user)
 
-    return render(request, "mylist.html", {"mylist": mylist, })
+    mylist = apps.get_model('content_management', 'WatchlistMoviesPart').objects.filter(subscriber_id= user_id)
+    context = {"mylist": mylist,'moz_user': moz_user,}
 
+    return render(request, "subscriber/mylist.html",context )
+
+@login_required
 def series(request):
     moz_user = models.Subscriber.objects.get(user=request.user)
 
@@ -72,6 +91,7 @@ def series(request):
     return render(request, 'subscriber/series.html', context)
 
 
+@login_required
 def series_details(request, series_id):
     moz_user = models.Subscriber.objects.get(user=request.user)
 
@@ -89,3 +109,25 @@ def series_details(request, series_id):
         'moz_user': moz_user,
     }
     return render(request, 'subscriber/series_details.html', context)
+
+@login_required
+def add_to_watchlist(request, passed_id):
+    # Get the logged-in user
+    user = models.Subscriber.objects.get(user=request.user)
+
+    # Check if the user is logged in
+    if user.is_authenticated:
+        # Get the movie based on the movie_id
+        movie = apps.get_model(app_label='content_creator', model_name='MoviePart').objects.filter(movie_id=passed_id)
+
+        # Create or get the WatchlistMoviesPart object for the user
+        watchlist, created = apps.get_model('content_management', 'WatchlistMoviesPart').objects.get_or_create(subscriber=user.subscriber)
+
+        # Add the movie to the watchlist
+        watchlist.movies.add(movie)
+
+        # Optionally, you can add a message to indicate success
+        messages.success(request, f'{movie.title} has been added to your watchlist.')
+
+    # Redirect the user back to the movie detail page or any other appropriate page
+    return redirect('subscriber:movie_info', movie_id=passed_id)
