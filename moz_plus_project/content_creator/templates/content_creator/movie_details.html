@@ -11,10 +11,11 @@
 
 {% block body %}
 {% include 'home/navbar.html' %}
-<div class="container">
-    <div class="card text-bg-dark">
-        <img src="{{url}}/media/{{content_movie.image}}" class="card-img" alt="{{content_movie.slug}}">
-        <div class="card-img-overlay">
+<div class="container ">
+    <div class=" text-bg-dark  ">
+        <img src="{{url}}/media/{{content_movie.image}}"  alt="{{content_movie.slug}}" style="width:300px" >
+        <div class="img-overlay">
+
             <h5 class="card-title">{{content_movie.title}}</h5>
             <p class="card-text">{{content_movie.overview}}...</p>
             <p class="card-text"><small>{{content_movie.created_date|date:"M d, Y" }}</small></p>
@@ -22,12 +23,12 @@
     </div>
 
     <div class="container">
-        <a href="{% url 'content_creator:add_moviepart' %}" class="btn btn-primary grid text-end" >Add moviepart</a>
+        <a href="{% url 'content_creator:add_moviepart' %}" class="btn btn-primary" >Add moviepart</a>
         {% for moviepart in content_moviepart %}
         <div class="card mb-3 text-dark" style="max-width: 540px;">
             <div class="row g-0">
                 <div class="col-md-4">
-                    <img src="{{url}}/media/{{moviepart.thumbnail}}" class="img-fluid rounded-start"
+                    <img src="{{url}}/media/{{moviepart.thumbnail}}" class="img-fluid rounded-start height="200rem"
                          alt="{{moviepart.slug}}">
                 </div>
                 <div class="col-md-8">

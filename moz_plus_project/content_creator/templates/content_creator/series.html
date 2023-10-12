@@ -18,8 +18,8 @@
                 <div class="card-body">
                     <h5 class="card-title">{{series.title}}</h5>
                     <a href="{% url 'content_creator:series_details' series.id %}" class="btn btn-primary">View</a>
-                    <a href="{% url 'content_creator:edit_series' series.id %}" class="btn btn-primary">Edit</a>
-                    <a href="{% url 'content_creator:delete_series' series.id %}" class="btn btn-primary">Delete</a>
+                    <a href="{% url 'content_creator:edit_series' series.id %}" class="btn btn-success">Edit</a>
+                    <a href="{% url 'content_creator:delete_series' series.id %}" class="btn btn-danger">Delete</a>
 
                 </div>
             </div>

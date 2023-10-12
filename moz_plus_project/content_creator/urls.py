@@ -2,7 +2,7 @@ from django.urls import path
 
 
 from . import views
-from .views import add_season,add_episode,edit_season,delete_Season,delete_episode,add_series,edit_episode,add_movies,edit_moviepart,add_moviespart,edit_movie,delete_movie,delete_moviepart,edit_series,delete_series,add_showperson
+from .views import add_season,add_episode,edit_season,delete_Season,delete_episode,add_series,edit_episode,add_movies,edit_moviepart,add_moviespart,edit_movie,delete_movie,delete_moviepart,edit_series,delete_series
 
 app_name = 'content_creator'
 
@@ -27,6 +27,5 @@ urlpatterns = [
     path("content-creator/delete-moviepart/<int:moviepart_id>/", delete_moviepart, name='delete_moviepart'),
     path("content-creator/edit-series/<int:passed_id>/",edit_series, name='edit_series'),
     path("content-creator/delete-series/<int:series_id>/",delete_series, name='delete_series'),
-    path('content-creator/add-showperson/',add_showperson, name='add_showperson'),
 
 ]

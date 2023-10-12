@@ -17,7 +17,7 @@
             <div class="card" style="width: 15rem; height: 18rem;">
                 <img src="{{url}}/media/{{movie.image}}" class="card-img-top" height="200rem"
                      alt="{{movie.title}}">
-                <div class="card-body d-flex">
+                <div class="card-body hstack gap-2">
 
                      <a href="{% url 'content_creator:movies_details' movie.id %}" class="btn btn-primary">View</a>
                      <a href="{% url 'content_creator:edit_movie' movie.id%}" class="btn btn-primary">Edit</a>

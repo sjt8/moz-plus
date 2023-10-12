@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django import forms
 from .models import MoviePart, Series, Season, Episodes, Movie
-from .forms import AddMoviesForm,EditMovieForm,EditMoviePartForm,AddMoviePartForm,EditEpisodesForm, EditSeasonForm,EditSerieForm,AddShowPerson
+from .forms import AddMoviesForm,EditMovieForm,EditMoviePartForm,AddMoviePartForm,EditEpisodesForm,EditSeasonForm,EditSerieForm
 from .forms import SeriesForm, SeasonForm, EpisodesForm
 from crispy_bootstrap5.bootstrap5 import FloatingField
 
@@ -254,15 +254,6 @@ def delete_series(request,series_id):
     content_series.delete()
     return redirect('content_creator:series')
 
-def add_showperson(request):
-    if request.method == 'POST':
-        add_showperson_form =AddShowPerson(request.POST, request.FILES)
-        if add_showperson_form.is_valid():
-            new_showperson = add_showperson_form.save(commit=False)
-            new_showperson.post_author = request.user
-            new_showperson.save()
-            return redirect('content_creator:')
-    else:
-        add_showperson_form = AddShowPerson()
 
-    return render(request, 'content_creator/add_showperson.html', {'add_showperson_form':add_showperson_form})
+
+
