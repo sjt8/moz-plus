@@ -1,6 +1,6 @@
 
 from django import forms
-from .models import MoviePart,Series,Season,Episodes,Movie
+from .models import MoviePart,Series,Season,Episodes,Movie,MovieTrailer, SeasonTrailer
 
 
 class AddMoviesForm(forms.ModelForm):
@@ -64,3 +64,14 @@ class EditEpisodesForm(forms.ModelForm):
     class Meta:
         model=Episodes
         fields =('title','slug','season','episode_no','plot','person','release_date','duration','thumbnail','video')
+
+
+class MovieTrailerAddform(forms.ModelForm):
+    class Meta:
+        model = MovieTrailer
+        fields = ('url',)
+
+class  AddSeasonTrailerform(forms.ModelForm):
+            class Meta:
+                model = SeasonTrailer
+                fields = ('url',)

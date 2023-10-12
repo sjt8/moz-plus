@@ -195,15 +195,18 @@ def add_movies(request):
 def add_moviespart(request):
     if request.method == 'POST':
         add_moviespart_form =AddMoviePartForm(request.POST, request.FILES)
+        add_movietrailer_form =MovieTrailerAddform(request.POST)
+
         if add_moviespart_form.is_valid():
-            new_moviepart= add_moviespart_form.save(commit=False)
-            new_moviepart.post_author = request.user
-            new_moviepart.save()
+            new_moviepart= add_moviespart_form.save()
+            new_movietrailer= add_movietrailer_form.save(commit=False)
+            new_movietrailer.movie_part=new_moviepart
+            new_movietrailer.save()
             return redirect('content_creator:movies_details', new_moviepart.movie.id)
     else:
         add_moviespart_form = AddMoviePartForm()
-
-    return render(request, 'content_creator/add_moviepart.html', {'add_moviespart_form': add_moviespart_form})
+        add_movietrailer_form = MovieTrailerAddform()
+    return render(request, 'content_creator/add_moviepart.html', {'add_moviespart_form': add_moviespart_form,'add_movietrailer_form':add_movietrailer_form})
 
 
 @login_required
@@ -268,15 +271,3 @@ def delete_series(request,series_id):
 
 
 
-@login_required
-def add_movietrailer(request,):
-    if request.method == 'POST':
-        add_movietrailer_form =MovieTrailerAddform(request.POST, request.FILES)
-        if add_movietrailer_form.is_valid():
-            new_movietrailer= add_movietrailer_form.save(commit=False)
-            new_movietrailer.save()
-            return redirect('content_creator:movies_details', new_movietrailer.moviepart.id)
-    else:
-        add_movietrailer_form =MovieTrailerAddform()
-
-    return render(request, 'content_creator/add_movietrailer.html', {'add_movietrailer_form': add_movietrailer_form})
