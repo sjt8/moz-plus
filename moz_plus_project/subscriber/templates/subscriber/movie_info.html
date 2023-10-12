@@ -18,7 +18,6 @@
                 <div class="col-md-3">
                     <img src="{{url}}/media/{{movie_part.thumbnail}}" class="img-fluid rounded-start" alt="{{movie_part.slug}}">
                     <div class="d-flex justify-content-between mt-2">
-                        <a href="{% url 'subscriber:mylist' user.id %}" class="btn btn-dark me-2 btn-lg  ">➕</a>
                         <a href="{% url 'home:home' %}media/{{ movie_part.video}}" class="btn btn-dark btn-lg ">▶PLAY</a>
                     </div>
                 </div>
@@ -33,8 +32,8 @@
                             </p>
                         </div>
                         <p class="card-text">{{movie_part.plot}}</p>
-                        <p class="card-text">{{movie_part.country}} | {{movie_part.language}}</p>
-                        <p class="card-text">Genre:{{movie_part.genre}}</p>
+                        <p class="card-text">{{movie_part.country}} | {{movie_part.language.name}}</p>
+                        <p class="card-text">Genre:{{movie_part.genre.name}}</p>
                         {% for person in movie_part.person.all %}
                             {{ person.role.name }}: {{ person.show_person.first_name }}{% if not forloop.last %}, {% endif %}
                         {% endfor %}

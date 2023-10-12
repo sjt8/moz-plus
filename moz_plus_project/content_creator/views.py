@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django import forms
 from .models import MoviePart, Series, Season, Episodes, Movie
-from .forms import AddMoviesForm,EditMovieForm,EditMoviePartForm,AddMoviePartForm,EditEpisodesForm,EditSeasonForm,EditSerieForm,MovieTrailerAddform
+from .forms import AddMoviesForm,EditMovieForm,EditMoviePartForm,AddMoviePartForm,EditEpisodesForm,EditSeasonForm,EditSerieForm
 from .forms import SeriesForm, SeasonForm, EpisodesForm
 from crispy_bootstrap5.bootstrap5 import FloatingField
 from django.contrib.auth.decorators import login_required
@@ -267,16 +267,3 @@ def delete_series(request,series_id):
     return redirect('content_creator:series')
 
 
-
-@login_required
-def add_movietrailer(request,):
-    if request.method == 'POST':
-        add_movietrailer_form =MovieTrailerAddform(request.POST, request.FILES)
-        if add_movietrailer_form.is_valid():
-            new_movietrailer= add_movietrailer_form.save(commit=False)
-            new_movietrailer.save()
-            return redirect('content_creator:movies_details', new_movietrailer.moviepart.id)
-    else:
-        add_movietrailer_form =MovieTrailerAddform()
-
-    return render(request, 'content_creator/add_movietrailer.html', {'add_movietrailer_form': add_movietrailer_form})

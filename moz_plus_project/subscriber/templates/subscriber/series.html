@@ -2,12 +2,19 @@
 
 {% block body %}
 {% include 'home/navbar.html' %}
-<div class="card bg-secondary">
-    <div class="d-flex justify-content-around card-body p-2">
-        <h4 class="align-self-start">Series:</h4>
-    </div>
-</div>
-<div class="container"><h2>Recommended for you..</h2>
+    {% block style %}
+                <style>
+                            .big-item {
+                                transition: transform 0.3s; /* Add transition for smooth effect */
+                            }
+
+                            .big-item:hover {
+                                transform: scale(1.1); /* Enlarge the element on hover */
+                            }
+                </style>
+    {% endblock style %}
+
+<div class="container"><h2>Series:</h2>
     <div class="row ">
         {% for series in content_series %}
         <div class="col">
@@ -24,20 +31,5 @@
     </div>
 </div>
 <br><br>
-<div class="container"><h2>Trending Shows</h2>
-    <div class="row ">
-        {% for series in trending_series%}
-        <div class="col">
-            <div class="card" style="width: 15rem; height: 15rem; bg-secondary" >
-                <img src="{{url}}/media/{{series.image}}" class="card-img-top" height="200rem"
-                     alt="{{series.title}}">
-                <div class="card-body">
-                    <h5 class="card-title text-dark">{{series.title}}</h5>
-                    <a href="{% url 'subscriber:series_details' series.id %}" class="btn btn-dark">View</a>
-                </div>
-            </div>
-        </div>
-        {% endfor %}
-    </div>
-</div>
+
 {% endblock body %}
