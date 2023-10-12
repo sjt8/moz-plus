@@ -1,5 +1,7 @@
-% extends 'base.html' %}
-{% block body  %}
+{% extends 'home/base.html' %}
+
+{% block body %}
+{% include 'home/navbar.html' %}
      {% for each in mylist %}
             <img width="200" src="media/{{each.image}}"><br/>
             {% if each.movie is None %}

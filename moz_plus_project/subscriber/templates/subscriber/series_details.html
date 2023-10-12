@@ -42,7 +42,6 @@
                     <img src="{{url}}/media/{{episode.thumbnail}}" class="img-fluid rounded-start"
                          alt="{{episode.slug}}">
                     <div class="d-flex justify-content-between mt-2">
-                        <a href="{% url 'subscriber:mylist' user.id %}" class="btn btn-dark me-2 btn-lg  ">➕</a>
                         <a href="{% url 'home:home' %}media/{{ episode.video}}" class="btn btn-dark btn-lg ">▶PLAY</a>
                     </div>
                 </div>
