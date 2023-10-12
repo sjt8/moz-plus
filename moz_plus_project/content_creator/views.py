@@ -1,20 +1,21 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django import forms
 from .models import MoviePart, Series, Season, Episodes, Movie
-from .forms import AddMoviesForm,EditMovieForm,EditMoviePartForm,AddMoviePartForm,EditEpisodesForm,EditSeasonForm,EditSerieForm
+from .forms import AddMoviesForm,EditMovieForm,EditMoviePartForm,AddMoviePartForm,EditEpisodesForm,EditSeasonForm,EditSerieForm,MovieTrailerAddform
 from .forms import SeriesForm, SeasonForm, EpisodesForm
 from crispy_bootstrap5.bootstrap5 import FloatingField
+from django.contrib.auth.decorators import login_required
 
 
 from . import models
 
-
+@login_required
 # Create your views here.
 def content_creator(request):
     moz_user = models.ContentCreator.objects.get(user=request.user)
     return render(request, 'content_creator/content_creator.html', {'moz_user': moz_user})
 
-
+@login_required
 def series(request):
     moz_user = models.ContentCreator.objects.get(user=request.user)
 
@@ -26,7 +27,7 @@ def series(request):
     }
     return render(request, 'content_creator/series.html', context)
 
-
+@login_required
 def series_details(request, series_id):
     moz_user = models.ContentCreator.objects.get(user=request.user)
 
@@ -53,7 +54,7 @@ def series_details(request, series_id):
 
 
 
-
+@login_required
 def add_season(request):
     if request.method == 'POST':
         add_season_form = SeasonForm(request.POST, request.FILES)
@@ -68,6 +69,7 @@ def add_season(request):
 
     return render(request, 'content_creator/add_season.html', context={'add_season_form': add_season_form})
 
+@login_required
 def add_episode(request):
     if request.method == 'POST':
         add_episode_form = EpisodesForm(request.POST, request.FILES)
@@ -83,6 +85,8 @@ def add_episode(request):
     return render(request, 'content_creator/add_episode.html', context={'add_episode_form': add_episode_form})
 
 
+
+@login_required
 def edit_season(request, passed_id):
     # get the get method var and passing  that along with the model
     season_details = get_object_or_404(Season,id=passed_id)
@@ -94,6 +98,7 @@ def edit_season(request, passed_id):
 
     return render(request, 'content_creator/edit_season.html', context={'edit_season_form': edit_season_form})
 
+@login_required
 def edit_episode(request, passed_id):
     # get the get method var and passing  that along with the model
     episode_details = Episodes.objects.get(id=passed_id)
@@ -105,7 +110,7 @@ def edit_episode(request, passed_id):
 
     return render(request, 'content_creator/edit_episode.html', context={'edit_episode_form': edit_episode_form})
 
-
+@login_required
 def delete_Season(request, season_id):
     content_season = models.Season.objects.get(id=season_id)
     series_id = content_season.series.id
@@ -114,7 +119,7 @@ def delete_Season(request, season_id):
 
 
 # deleting the episode
-
+@login_required
 def delete_episode(request, episode_id):
     # get the get method var and passing  that along with the model
     content_episode = models.Episodes.objects.get(id=episode_id)
@@ -126,7 +131,7 @@ def delete_episode(request, episode_id):
 
 
 
-
+@login_required
 def add_series(request):
     if request.method == 'POST':
         add_series_form =SeriesForm(request.POST, request.FILES)
@@ -140,6 +145,7 @@ def add_series(request):
 
     return render(request, 'content_creator/add_series.html', {'add_series_form': add_series_form })
 
+@login_required
 def movies(request):
     moz_user = models.ContentCreator.objects.get(user=request.user)
 
@@ -150,7 +156,7 @@ def movies(request):
         'moz_user': moz_user
     }
     return render(request, 'content_creator/movies.html', context)
-
+@login_required
 def movie_details(request,movie_id):
     content_movie = models.Movie.objects.get(id=movie_id)
     content_moviepart = models.MoviePart.objects.filter(movie_id=movie_id)
@@ -171,7 +177,7 @@ def movie_details(request,movie_id):
     }
     return render(request, 'content_creator/movie_details.html', context)
 
-
+@login_required
 def add_movies(request):
     if request.method == 'POST':
         add_movies_form =AddMoviesForm(request.POST, request.FILES)
@@ -185,7 +191,7 @@ def add_movies(request):
 
     return render(request, 'content_creator/add_movies.html', {'add_movies_form': add_movies_form})
 
-
+@login_required
 def add_moviespart(request):
     if request.method == 'POST':
         add_moviespart_form =AddMoviePartForm(request.POST, request.FILES)
@@ -199,6 +205,8 @@ def add_moviespart(request):
 
     return render(request, 'content_creator/add_moviepart.html', {'add_moviespart_form': add_moviespart_form})
 
+
+@login_required
 def edit_movie(request, passed_id):
     # get the get method var and passing  that along with the model
     movie_details = get_object_or_404(Movie,id=passed_id)
@@ -211,7 +219,7 @@ def edit_movie(request, passed_id):
     return render(request, 'content_creator/edit_movies.html', context={'edit_movie_form':edit_movie_form})
 
 
-
+@login_required
 def edit_moviepart(request, passed_id):
     # get the get method var and passing  that along with the model
     moviepart_details = get_object_or_404(MoviePart,id=passed_id)
@@ -224,6 +232,7 @@ def edit_moviepart(request, passed_id):
     return render(request, 'content_creator/edit_moviepart.html', context={'edit_moviepart_form': edit_moviepart_form})
 
 
+@login_required
 def delete_moviepart(request,moviepart_id):
     content_moviepart = models.MoviePart.objects.get(id=moviepart_id)
     movie = content_moviepart.movie.id
@@ -231,13 +240,14 @@ def delete_moviepart(request,moviepart_id):
     return redirect('content_creator:movies_details', movie)
 
 
-
+@login_required
 def delete_movie(request,movie_id):
     content_movie = models.Movie.objects.get(id=movie_id)
     content_movie.delete()
     return redirect('content_creator:movies')
 
 
+@login_required
 def edit_series(request, passed_id):
     # get the get method var and passing  that along with the model
     series_details = get_object_or_404(Series,id=passed_id)
@@ -249,6 +259,8 @@ def edit_series(request, passed_id):
 
     return render(request, 'content_creator/edit_series.html', context={'edit_series_form':edit_series_form})
 
+
+@login_required
 def delete_series(request,series_id):
     content_series = models. Series.objects.get(id=series_id)
     content_series.delete()
@@ -256,4 +268,15 @@ def delete_series(request,series_id):
 
 
 
+@login_required
+def add_movietrailer(request,):
+    if request.method == 'POST':
+        add_movietrailer_form =MovieTrailerAddform(request.POST, request.FILES)
+        if add_movietrailer_form.is_valid():
+            new_movietrailer= add_movietrailer_form.save(commit=False)
+            new_movietrailer.save()
+            return redirect('content_creator:movies_details', new_movietrailer.moviepart.id)
+    else:
+        add_movietrailer_form =MovieTrailerAddform()
 
+    return render(request, 'content_creator/add_movietrailer.html', {'add_movietrailer_form': add_movietrailer_form})
