@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django import forms
 from .models import MoviePart, Series, Season, Episodes, Movie
-from .forms import AddMoviesForm,EditMovieForm,EditMoviePartForm,AddMoviePartForm,EditEpisodesForm,EditSeasonForm,EditSerieForm,MovieTrailerAddform
+from .forms import AddMoviesForm,EditMovieForm,EditMoviePartForm,AddMoviePartForm,EditEpisodesForm,EditSeasonForm,EditSerieForm,MovieTrailerAddform,AddSeasonTrailerform
 from .forms import SeriesForm, SeasonForm, EpisodesForm
 from crispy_bootstrap5.bootstrap5 import FloatingField
 from django.contrib.auth.decorators import login_required
@@ -62,12 +62,11 @@ def add_season(request):
             new_season = add_season_form.save(commit=False)
             new_season.post_author = request.user
             new_season.save()
+
             return redirect('content_creator:series_details',new_season.series.id)
-
     else:
-        add_season_form = SeasonForm()
-
-    return render(request, 'content_creator/add_season.html', context={'add_season_form': add_season_form})
+         add_season_form = SeasonForm()
+         return render(request, 'content_creator/add_season.html', context={'add_season_form': add_season_form})
 
 @login_required
 def add_episode(request):
