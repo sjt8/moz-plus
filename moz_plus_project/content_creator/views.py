@@ -4,6 +4,7 @@ from .models import MoviePart, Series, Season, Episodes, Movie
 
 from .forms import AddMoviesForm,EditMovieForm,EditMoviePartForm,AddMoviePartForm,EditEpisodesForm,EditSeasonForm,EditSerieForm,MovieTrailerAddform
 
+
 from .forms import SeriesForm, SeasonForm, EpisodesForm
 from crispy_bootstrap5.bootstrap5 import FloatingField
 from django.contrib.auth.decorators import login_required
@@ -268,5 +269,6 @@ def edit_series(request, passed_id):
 def delete_series(request,series_id):
     content_series = models. Series.objects.get(id=series_id)
     content_series.delete()
+
     return redirect('content_creator:series')
 

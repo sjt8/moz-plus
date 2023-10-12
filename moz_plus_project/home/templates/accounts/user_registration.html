@@ -1,17 +1,21 @@
 {% extends 'home/base.html' %}
 {% load crispy_forms_tags %}
 
-{% block title %} Registration {% endblock title %}
+{% block title %} <title>Registration</title> {% endblock title %}
 
 {% block body %}
 
 <div class="container m-5">
-    <h4>Registration</h4>
-    <form class="form d-flex flex-column justify-content-evenly" action="" method="post" novalidate>
-        {% csrf_token %}
-        {{ form|crispy }}
-        <input class="btn btn-success" type="submit" value="register">
-    </form>
+    <div class="d-flex flex-column justify-content-center align-items-center" style="height: 100vh;">
+        <div>
+            <h1 class="m-4">Registration</h1>
+        </div>
+        <form class="form w-50" action="" method="post" novalidate>
+            {% csrf_token %}
+            {{ form|crispy }}
+            <input class="btn btn-success" type="submit" value="login">
+        </form>
+    </div>
 </div>
 
 {% endblock body %}

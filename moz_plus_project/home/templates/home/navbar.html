@@ -1,7 +1,9 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
+        {% load static %}
         <a class="navbar-brand" href="#">
-            <img src="netflix-logo.png" alt="Netflix Logo" width="120">
+            <img src="{% static 'images/logo.png' %}" alt="Netflix Logo" width="32">
+            <span class="fs-4 fw-bold py-3">Moz<sup>+</sup>&nbsp;</span>
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -59,7 +61,7 @@
             </div>
             <div class="me-2"></div>
             {% else %}
-            <a class="btn btn-outline-success nav-link" href="{% url 'home:login' %}">Login</a>
+            <a class="btn btn-danger nav-link text-white" href="{% url 'home:login' %}">Login</a>
             {% endif %}
         </div>
     </div>
