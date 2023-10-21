@@ -47,7 +47,7 @@ def subscriber_registration(request):
             group_reviewer = Group.objects.get(name='subscriber')
             new_user.groups.add(group_reviewer)
 
-            return redirect('subscriber:home')
+            return redirect('subscriber:subscriber')
 
     context = {'form': form}
     return render(request, 'accounts/user_registration.html', context)
@@ -65,7 +65,7 @@ def creator_registration(request):
             group_reviewer = Group.objects.get(name='content_creator')
             new_user.groups.add(group_reviewer)
 
-            return redirect('content_creator:home')
+            return redirect('content_creator:content_creator')
 
     context = {'form': form}
     return render(request, 'accounts/creator_registration.html', context)
