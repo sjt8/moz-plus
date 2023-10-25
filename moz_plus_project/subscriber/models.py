@@ -18,8 +18,12 @@ class Subscriber(models.Model):
 
 class Subscription(models.Model):
     subscriber = models.OneToOneField(Subscriber, on_delete=models.CASCADE)
-    plan = models.ForeignKey("super_admin.SubscriptionPlan", on_delete=models.CASCADE, null=True,
-                             default=1)
+    plan = models.ForeignKey(
+        "super_admin.SubscriptionPlan", 
+        on_delete=models.CASCADE, 
+        null=True,
+        default=1
+    )
     last_subscription = models.DateTimeField(auto_now=True)
 
     def __str__(self):

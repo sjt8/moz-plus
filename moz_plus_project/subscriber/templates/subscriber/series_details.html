@@ -1,84 +1,130 @@
 {% extends 'home/base.html' %}
 
 {% block body %}
-{% include 'home/navbar.html' %}
-<div class="container">
-    <div class="card text-bg-dark">
-        <img style="width: 1250px; height: auto;" src="{{url}}/media/{{content_series.image}}" class="card-img" alt="{{content_series.slug}}">
-        <div class="card-img-overlay" style="background-color: rgba(0, 0, 0, 0.7);">
-            <h5 class="card-title">{{content_series.title}}</h5>
-            <p class="card-text">{{content_series.overview}}...</p>
-                 <p class="card-text">{{content_series.country}} | {{content_series.language}}</p>
-                        <p class="card-text">Genre:{{content_series.genre}}</p>
-                        {% for person in content_series.person.all %}
-                            {{ person.role.name }}: {{ person.show_person.first_name }}{% if not forloop.last %}, {% endif %}
-                        {% endfor %}
-                 <p class="card-text">{{content_series.studio}}</p>
-            <p class="card-text"><small>{{content_series.created_date|date:"M d, Y" }}</small></p>
-        </div>
-    </div>
+  {% include 'home/navbar.html' %}
+  <div class="container">
     <div class="card bg-secondary">
-        <div class="d-flex justify-content-around card-body p-2">
-            <h4 class="align-self-start">Season:</h4>
-            <div class="dropdown">
-                <button class="btn btn-dark dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                        aria-expanded="false">
-                    Seasons
-                </button>
-                <ul class="dropdown-menu">
-                    {% for season in content_season%}
-                    <li><a class="dropdown-item" href="?season={{season.id}}">Season {{season.season_no}}</a></li>
-                    {% endfor %}
-                </ul>
+      <img src="{{ content_series.image.url }}" class="rounded" alt="{{ content_series.slug }}" />
+      <div class="card-img-overlay" style="background-color: rgba(0, 0, 0, 0.6);">
+        <div class="row text-light h-100">
+          <div class="col-6">
+            <div class="d-flex flex-column justify-content-around h-100">
+              <div class="fs-2 fw-bold">{{ content_series.title }}</div>
+              <div class="fs-6">{{ content_series.overview }}</div>
             </div>
+          </div>
+          <div class="col-6">
+            <div class="d-flex flex-column justify-content-center h-100">
+              <div class="row">
+                <div class="col">
+                  <div class="fs-5">Release Date</div>
+                </div>
+                <div class="col">
+                  <div class="fs-6">{{ content_series.created_date }}</div>
+                </div>
+              </div>
+              <div class="row mb-2">
+                <div class="col-4">
+                  <div class="card-text fs-5">Genre</div>
+                </div>
+                <div class="col-8">
+                  {% for genre in content_series.genre.all %}
+                    <span class="badge rounded-pill bg-primary my-1 p-2">{{ genre.name }}</span>
+                  {% endfor %}
+                </div>
+              </div>
+              <div class="row mb-2">
+                <div class="col-4">
+                  <div class="card-text fs-5">Studio</div>
+                </div>
+                <div class="col-8">
+                  {% for studio in content_season.studio.all %}
+                    <div class="row">
+                      <div class="col-3">
+                        <img src="{{ studio.image.url }}" alt="" width="48" height="48" class="rounded-circle me-2" />
+                      </div>
+                      <div class="col-9">{{ studio.name }}</div>
+                    </div>
+                  {% endfor %}
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <div class="fs-5">Favourite</div>
+                </div>
+                <div class="col">
+                  <form action="" method="POST">
+                    {% csrf_token %}
+                    <button class="btn" type="submit" name="favourite">
+                      {% if favourite %}
+                        <i class="bi bi-star-fill fs-2 text-warning"></i>
+                      {% else %}
+                        <i class="bi bi-star fs-2 text-warning"></i>
+                      {% endif %}
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
-    <br>
-    <div class="container">
+
+    <div class="card bg-secondary my-2">
+      <div class="card-body row justify-content-between p-2">
+        <div class="col">
+          <div class="fs-5">Season:</div>
+        </div>
+        <div class="col">
+          <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Season {{ content_season.season_no }}</button>
+            <ul class="dropdown-menu">
+              {% for season in content_seasons %}
+                <li>
+                  <a class="dropdown-item" href="{% url 'subscriber:series_details' content_series.id season.id %}">Season {{ season.season_no }}</a>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="my-2 overflow-auto" style="height: 80vh;">
+      <div class="row row-cols-1 row-cols-md-2 row-cols-md-3 g-2" style="width: 85vw;">
         {% for episode in content_episodes %}
-        <div class="card mb-3 text-light bg-secondary" style="max-width: 700px;">
-            <div class="row g-0">
-                <div class="col-md-3">
-                    <img src="{{url}}/media/{{episode.thumbnail}}" class="img-fluid rounded-start"
-                         alt="{{episode.slug}}">
-                    <div class="d-flex justify-content-between mt-2">
-                        <a href="{% url 'home:home' %}media/{{ episode.video}}" class="btn btn-dark btn-lg ">▶PLAY</a>
-                    </div>
+          <div class="col">
+            <div class="card" style="width: 22rem;">
+              <div class="row">
+                <div class="col">
+                  <a href="{% url 'subscriber:episode_details' content_series.id content_season.id episode.id %}" class="text-decoration-none text-dark"><img src="{{ episode.thumbnail.url }}" class="card-img-top" alt="{{ episode.slug }}" /></a>
                 </div>
-                <div class="col-md-9">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between">
-                            <h4 class="card-title">{{episode.title}}</h4>
-                            <p class="card-text">
-                                <small class="text-body-secondary">
-                                        {{content_series.created_date|date:"M d,Y" }}
-                                </small>
-                            </p>
-                        </div>
-                        <p class="card-text">{{episode.plot}}</p>
-
-                        {% for rate in rating %}
-                            <p class="card-text">{{rate.get_rating_display}}</p>
-                        {% endfor %}
+                <div class="col">
+                  <div class="card-body text-dark">
+                    <div class="d-flex flex-column justify-content-between" style="height: 14rem;">
+                      <div class="card-title">{{ episode.title|slice:'30' }}</div>
+                      <div class="card-text">Ratings: {{ episode.average_rating }}</div>
+                      <a href="{{ episode.video.url }}" class="btn btn-primary"><i class="bi bi-play-btn"></i></a>
                     </div>
+                  </div>
                 </div>
+              </div>
             </div>
-        </div>
+          </div>
         {% endfor %}
+      </div>
     </div>
 
-    <div class="container-fluid py-2">
-    <h2 class="font-weight-light">Trailers</h2>
-    <div class="d-flex flex-row flex-nowrap overflow-scroll">
+    <div class="my-2">
+      <div class="fs-2 fw-bold">Trailers</div>
+      <div class="d-flex flex-row flex-nowrap overflow-auto">
         {% for trailer in content_season_trailer %}
-        <div class="embed-responsive embed-responsive-4by3 m-5">
-            <iframe class="embed-responsive-item" src="{{trailer.url}}"
-                    allowfullscreen></iframe>
-        </div>
+          <div class="embed-responsive embed-responsive-4by3">
+            <iframe src="{{ trailer.url }}" class="embed-responsive-item mx-2" title="YouTube video" allowfullscreen></iframe>
+          </div>
         {% endfor %}
+      </div>
     </div>
-</div>
-
-</div>
-
-{% endblock body %}
+  </div>
+{% endblock %}
