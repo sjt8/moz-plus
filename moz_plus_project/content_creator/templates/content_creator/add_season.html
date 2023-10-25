@@ -1,17 +1,17 @@
 {% extends 'home/base.html' %}
 
-{% block title%} season form {% endblock %}
+{% block title %}
+  <title>Add Season</title>
+{% endblock title%}
 {% load crispy_forms_tags %}
- {% block body%}
-
-
-  <div class='container mx-20'>
-
-      <form action="" method="POST" enctype="multipart/form-data" novalidate>
-          {% csrf_token %}
-          {{ add_season_form|crispy}}
-          <input type="submit" value="Add_post" class="btn btn-success">
-      </form>
-      <a href="" class="btn btn-secondary">Go back</a>
+{% block body %}
+  <div class="container my-2">
+    <h4>Season</h4>
+    <hr/>
+    <form action="" method="POST" enctype="multipart/form-data" novalidate>
+      {% csrf_token %}
+      {{ add_season_form|crispy }}
+      <input type="submit" value="Add" class="btn btn-primary" />
+    </form>
   </div>
-      {% endblock %}
+{% endblock %}

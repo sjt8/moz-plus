@@ -1,72 +1,89 @@
 {% extends 'home/base.html' %}
 
-
 {% block body %}
-{% include 'home/navbar.html' %}
-<div class="container">
-    <div class="card text-bg-dark">
-        <img src="{{url}}/media/{{content_series.image}}" class="card-img" alt="{{content_series.slug}}">
-        <div class="card-img-overlay">
-            <h5 class="card-title">{{content_series.title}}</h5>
-            <p class="card-text">{{content_series.overview}}...</p>
-            <p class="card-text"><small>{{content_series.created_date|date:"M d, Y" }}</small></p>
-        </div>
-    </div>
+  {% include 'home/navbar.html' %}
+  <div class="container">
     <div class="card bg-secondary">
-        <div class="d-flex justify-content-around card-body p-2">
+      <img src="{{ content_series.image.url }}" class="rounded" alt="{{ content_series.slug }}" />
+      <div class="card-img-overlay">
+        <div class="row justify-content-between h-100">
+          <h5 class="card-title fs-2">{{ content_series.title }}</h5>
+          <p class="card-text">{{ content_series.overview }}...</p>
+          <div class="row justify-content-end">
+            <p class="card-text col-2">
+              <small>{{ content_series.created_date|date:'M d, Y' }}</small>
+            </p>
+          </div>
+          <div class="row justify-content-end">
+            <div class="col-1">
+              <a href="{% url 'content_creator:edit_series' content_series.id %}" class="btn btn-primary">Edit</a>
+            </div>
+            <div class="col-1">
+              <a href="{% url 'content_creator:delete_series' content_series.id %}" class="btn btn-danger">Delete</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-            <div class="dropdown">
-                <button class="btn btn-dark dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                        aria-expanded="false">Season
-                </button>
-                <ul class="dropdown-menu">
-                    {% for season in content_season%}
-                    <li>
-                        <a class="dropdown-item" href="?season={{season.id}}">Season {{season.season_no}}</a>
-                    </li>
+    <div class="row align-items-center justify-content-between my-2">
+      {% if content_season %}
+        <div class="col">
+          <div class="card bg-secondary">
+            <div class="card-body row justify-content-between p-2">
+              <div class="col">
+                <div class="dropdown">
+                  <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Season {{ content_season.season_no }}</button>
+                  <ul class="dropdown-menu">
+                    {% for season in content_seasons %}
+                      <li>
+                        <a class="dropdown-item" href="{% url 'content_creator:series_details' content_series.id season.id %}">Season {{ season.season_no }}</a>
+                      </li>
                     {% endfor %}
-                </ul>
+                  </ul>
+                </div>
+              </div>
+              <div class="col">
+                <a href="{% url 'content_creator:edit_season' content_series.id content_season.id %}" class="btn btn-primary">Edit</a>
+              </div>
+              <div class="col">
+                <a href="{% url 'content_creator:delete_season' content_season.id %}" class="btn btn-danger">Delete</a>
+              </div>
             </div>
-            <a href="{% url 'content_creator:edit_season' season_id %}" class="btn btn-primary ">Edit</a>
-            <a href="{% url 'content_creator:delete_season' season_id%}" class="btn btn-danger">Delete</a>
-            <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                        aria-expanded="false">
-                    Add Form
-                </button>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="{% url 'content_creator:add_season' %}">Season
-                    </a></li>
-                    <li><a class="dropdown-item" href="{% url 'content_creator:add_episode'%}">Episode</a></li>
-                </ul>
-            </div>
+          </div>
         </div>
+        <div class="col-2">
+          <a href="{% url 'content_creator:add_season' content_series.id %}" class="btn btn-primary">Add Season</a>
+        </div>
+        <div class="col-2">
+          <a href="{% url 'content_creator:add_episode' content_season.id %}" class="btn btn-primary">Add Episode</a>
+        </div>
+      {% else %}
+        <div class="col">
+          <a href="{% url 'content_creator:add_season' content_series.id %}" class="btn btn-primary">Add Season</a>
+        </div>
+      {% endif %}
     </div>
 
-    <div class="container">
-        {% for episode in content_episodes %}
-        <div class="card mb-3 text-dark" style="max-width: 540px;">
-            <div class="row g-0">
-                <div class="col-md-4">
-                    <img src="{{url}}/media/{{episode.thumbnail}}" class="img-fluid rounded-start"
-                         alt="{{episode.slug}}">
-                </div>
-                <div class="col-md-8">
-                    <div class="card-body">
-                        <h5 class="card-title">{{episode.title}}</h5>
-                        <p class="card-text">{{episode.plot|slice:":50"}}</p>
-                        <p class="card-text"><small class="text-body-secondary">
-                            {{content_series.created_date|date:"M d, Y" }}</small></p>
-                        <a href="{% url 'content_creator:delete_episode' episode.id%}" class="btn btn-danger">Delete</a>
-                        <a href="{% url 'content_creator:edit_episode' episode.id %}" class="btn btn-success">Edit Episode</a>
-
-
-                    </div>
-                </div>
+    {% for episode in content_episodes %}
+      <div class="card mb-3 text-dark w-50">
+        <div class="row">
+          <div class="col-4">
+            <img src="{{ episode.thumbnail.url }}" class="img-fluid rounded-start w-75" alt="{{ episode.slug }}" />
+          </div>
+          <div class="col-8">
+            <div class="card-body">
+              <h5 class="card-title">{{ episode.title }}</h5>
+              <p class="card-text">{{ episode.plot|slice:':50' }}</p>
+              <p class="card-text">
+                <small class="text-body-secondary">{{ episode.created_date|date:'M d, Y' }}</small>
+              </p>
+              <a href="{% url 'content_creator:edit_episode' content_season.id episode.id %}" class="btn btn-success">Edit</a>
+              <a href="{% url 'content_creator:delete_episode' episode.id %}" class="btn btn-danger">Delete</a>
             </div>
+          </div>
         </div>
-        {% endfor %}
-    </div>
-</div>
-
-{% endblock body %}
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}

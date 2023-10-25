@@ -1,18 +1,17 @@
 {% extends 'home/base.html' %}
 
-{% block title%} episode form {% endblock %}
+{% block title %}
+  <title>Add Episode</title>
+{% endblock %}
 {% load crispy_forms_tags %}
- {% block body%}
-
-
-  <div class='container mx-20'>
-
-      <form action="" method="POST" enctype="multipart/form-data" novalidate>
-          {% csrf_token %}
-          {{ add_episode_form |crispy}}
-          <input type="submit" value="add_post" class="btn btn-success">
-      </form>
-      <a href="" class="btn btn-secondary">Go back</a>
+{% block body %}
+  <div class="container my-20">
+    <h4>Episode</h4>
+    <hr />
+    <form action="" method="POST" enctype="multipart/form-data" novalidate>
+      {% csrf_token %}
+      {{ add_episode_form|crispy }}
+      <input type="submit" value="Add" class="btn btn-primary" />
+    </form>
   </div>
-
-      {% endblock %}
+{% endblock %}

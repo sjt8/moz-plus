@@ -2,8 +2,13 @@
 
 {% load crispy_forms_tags %}
 
+{% block title %}
+<title>
+    Add Movie
+</title>
+{% endblock title %}
+
 {% block body %}
-<h2>Add Content of movies</h2>
  <div class="container m-5">
      <form class="form" method="post" enctype="multipart/form-data">
     {% csrf_token %}

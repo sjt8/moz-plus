@@ -14,6 +14,4 @@ admin.site.register([
     models.MoviePart,
     models.Season,
     models.Episodes,
-    models.ContentMovie,
-    models.ContentSeries,
 ])

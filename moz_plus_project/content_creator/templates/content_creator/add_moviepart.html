@@ -1,18 +1,19 @@
-  {% extends 'home/base.html' %}
+{% extends 'home/base.html' %}
 
-{% block title%} Add movie part {% endblock %}
+{% block title %}
+  <title>Add Movies</title>
+{% endblock %}
 {% load crispy_forms_tags %}
 
- {% block body%}
-
-
-  <div class='container mg-3'>
-
-      <form action="" method="POST" enctype="multipart/form-data" novalidate>
-          {% csrf_token %}
-          {{add_moviespart_form|crispy}}
-          {{add_movietrailer_form|crispy}}
-          <input type="submit" value="submit" class="btn btn-success">
-      </form>
+{% block body %}
+  <div class="container my-3">
+    <h4>Movies</h4>
+    <hr />
+    <form action="" method="POST" enctype="multipart/form-data" novalidate>
+      {% csrf_token %}
+      {{ add_moviespart_form|crispy }}
+      {{ add_movietrailer_form|crispy }}
+      <input type="submit" value="Save" class="btn btn-success" />
+    </form>
   </div>
-      {% endblock %}
+{% endblock %}
