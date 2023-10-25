@@ -5,7 +5,7 @@
         <a class="navbar-brand" href="{% url 'subscriber:subscriber' %}">
             <img src="{% static 'images/mozlogo.svg' %}" alt="Moz Logo" width="92"/>
         </a>
-        {% elif request.user.is_authenticated and request.user.groups.all.name == 'content_creator' %}
+        {% elif request.user.is_authenticated and request.user.groups.all.0.name == 'content_creator' %}
         <a class="navbar-brand" href="{% url 'content_creator:content_creator' %}">
             <img src="{% static 'images/mozlogo.svg' %}" alt="Moz Logo" width="92"/>
         </a>
@@ -28,8 +28,11 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'subscriber:movies' %}">Movies</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'subscriber:favourites' %}">Favourites</a>
+                </li>
             </ul>
-            {% elif request.user.is_authenticated and request.user.groups.all.name == 'content_creator' %}
+            {% elif request.user.is_authenticated and request.user.groups.all.0.name == 'content_creator' %}
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'content_creator:series' %}">TV Shows</a>
@@ -46,7 +49,7 @@
 
             {% if request.user.is_authenticated %}
             <form class="d-flex">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
+                <input class="form-control me-2" type="search" name="search" placeholder="Search" aria-label="Search" />
                 <button class="btn btn-outline-success" type="submit">Search</button>
             </form>
             <div class="dropdown m-2" style="width: 150px;">
