@@ -26,7 +26,9 @@ def user_login(request):
 
             if auth is not None:
                 login(request, auth)
-                if request.user.groups.all().first().name == 'content_creator':
+                if request.user.is_superuser:
+                    return redirect('super_admin:super_admin')
+                elif request.user.groups.all().first().name == 'content_creator':
                     return redirect('content_creator:content_creator')
                 elif request.user.groups.all().first().name == 'subscriber':
                     return redirect('subscriber:subscriber')

@@ -1,7 +1,8 @@
+{% load static %}
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">
-            <img src="netflix-logo.png" alt="Netflix Logo" width="120">
+        <a class="navbar-brand" href="{% url 'super_admin:super_admin' %}">
+            <img src="{% static 'images/mozlogo.svg' %}" alt="Moz Logo" width="92"/>
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
