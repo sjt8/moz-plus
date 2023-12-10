@@ -1,0 +1,126 @@
+{% extends 'home/base.html' %}
+
+{% load crispy_forms_tags %}
+{% block body %}
+  {% include 'home/navbar.html' %}
+  <div class="container">
+    <div class="card bg-secondary">
+      <img src="{{ content_movies_part.thumbnail.url }}" class="rounded" alt="{{ content_movies_part.slug }}" width="250px" />
+      <div class="card-img-overlay" style="background-color: rgba(0, 0, 0, 0.6);">
+        <div class="row text-light h-100">
+          <div class="col-6">
+            <div class="fs-2 fw-bold">{{ content_movies_part.title }}</div>
+          </div>
+          <div class="col-6">
+            <div class="d-flex flex-column justify-content-around h-100">
+              <div class="row">
+                <div class="col">
+                  <div class="fs-5">Release Date</div>
+                </div>
+                <div class="col">
+                  <div class="fs-6">{{ content_movies_part.release_date }}</div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <div class="fs-5">Duration</div>
+                </div>
+                <div class="col">
+                  <div class="fs-6">{{ content_movies_part.duration }}</div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <div class="fs-5">Content Rating</div>
+                </div>
+                <div class="col">
+                  <div class="fs-6">{{ content_movies_part.content_rating }}</div>
+                </div>
+              </div>
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#movieModal">
+                <i class="bi bi-play-btn"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card text-dark my-4">
+      <div class="card-body">
+        <div class="row">
+          <div class="col">
+            <div class="card-text fs-4 fw-bold">Plot</div>
+            <p class="card-text">{{ content_movies_part.plot }}</p>
+          </div>
+          <div class="col">
+            <div class="row mb-2">
+              <div class="col-4">
+                <div class="card-text fs- fw-bold">Genre</div>
+              </div>
+              <div class="col-8">
+                {% for genre in content_movies_part.genre.all %}
+                  <span class="badge rounded-pill bg-primary my-1 p-2">{{ genre.name }}</span>
+                {% endfor %}
+              </div>
+            </div>
+            <div class="row mb-2">
+              <div class="col-4">
+                <div class="card-text fs- fw-bold">Studio</div>
+              </div>
+              <div class="col-8">
+                <div class="row">
+                  <div class="col-3">
+                    <img src="{{ content_movies_part.studio.image.url }}" alt="" width="48" height="48" class="rounded-circle me-2" />
+                  </div>
+                  <div class="col-9">{{ content_movies_part.studio.name }}</div>
+                </div>
+              </div>
+            </div>
+            <div class="row mb-2">
+              <div class="col-4">
+                <div class="card-text fs- fw-bold">Cast &amp; Crew</div>
+              </div>
+              <div class="col-8">
+                {% for person in content_movies_part.person.all %}
+                  <div class="row">
+                    <div class="col">{{ person.show_person.first_name }} {{ person.show_person.last_name }}</div>
+                    <div class="col">{{ person.role.name }}</div>
+                  </div>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="my-2">
+      <div class="fs-2 fw-bold">Trailers</div>
+      <div class="d-flex flex-row flex-nowrap overflow-auto">
+        {% for trailer in content_movie_trailer %}
+          <div class="embed-responsive embed-responsive-4by3">
+            <iframe src="{{ trailer.url }}" class="embed-responsive-item mx-2" title="YouTube video" allowfullscreen></iframe>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="movieModal" tabindex="-1" aria-labelledby="movieModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5 text-dark" id="movieModalLabel">Login to View!!!</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body text-dark">
+            You need to Login to view this movie.
+        </div>
+        <div class="modal-footer">
+          <a class="btn btn-primary nav-link text-white" href="{% url 'home:login' %}">Login</a>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

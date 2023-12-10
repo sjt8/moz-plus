@@ -28,4 +28,27 @@ urlpatterns = [
     path(
         "content-creator/register/", views.creator_registration, name="register_creator"
     ),
+    path("home/series/", views.series, name="series"),
+    path(
+        "home/series/<int:series_id>/",
+        views.series_details,
+        name="series_details",
+    ),
+    path(
+        "home/series/<int:series_id>/<int:season_id>/",
+        views.series_details,
+        name="series_details",
+    ),
+    path(
+        "home/series/<int:series_id>/<int:season_id>/<int:episode_id>/",
+        views.episode_details,
+        name="episode_details",
+    ),
+    path("home/movies/", views.movies, name="movies"),
+    path("home/movie-info/<int:passed_id>/", views.movie_info, name="movie_info"),
+    path(
+        "home/movie-part/<int:movie_part_id>/",
+        views.movie_part_details,
+        name="movie_part_details",
+    ),
 ]
