@@ -1,0 +1,35 @@
+{% extends 'home/base.html' %}
+
+{% block body %}
+  {% include 'home/navbar.html' %}
+  {% block style %}
+    <style>
+      .big-item {
+        transition: transform 0.3s; /* Add transition for smooth effect */
+      }
+      
+      .big-item:hover {
+        transform: scale(1.1); /* Enlarge the element on hover */
+      }
+    </style>
+  {% endblock %}
+
+  <div class="container my-4">
+    <h2>Series:</h2>
+
+    <div class="row row-cols-1 row-cols-md-2 row-cols-md-3 row-cols-md-4 g-5">
+      {% for serie in content_series %}
+        <div class="col">
+          <a href="{% url 'home:series_details' serie.id %}" class="text-decoration-none text-dark">
+            <div class="card big-item">
+              <img src="{{ serie.image.url }}" class="card-img-top" height="200rem" alt="{{ serie.title }}" />
+              <div class="card-body">
+                <div class="card-title">{{ serie.title }}</div>
+              </div>
+            </div>
+          </a>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}

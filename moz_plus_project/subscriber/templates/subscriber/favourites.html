@@ -1,0 +1,49 @@
+{% extends 'home/base.html' %}
+
+{% block body %}
+  {% include 'home/navbar.html' %}
+  <nav>
+    <div class="nav nav-tabs nav-justified" id="nav-tab" role="tablist">
+      <button class="nav-link active" id="nav-movie-tab" data-bs-toggle="tab" data-bs-target="#nav-movie" type="button" role="tab">Movie</button>
+      <button class="nav-link" id="nav-series-tab" data-bs-toggle="tab" data-bs-target="#nav-series" type="button" role="tab">Series</button>
+    </div>
+  </nav>
+  <div class="tab-content" id="nav-tabContent">
+    <div class="tab-pane fade show active" id="nav-movie" role="tabpanel" aria-labelledby="nav-movie-tab" tabindex="0">
+        <div class="container my-2">
+            <div class="row row-cols-1 row-cols-md-2 row-cols-md-3 row-cols-md-4 g-5">
+                {% for movie in favourite_movie %}
+                  <div class="col">
+                    <a href="{% url 'subscriber:movie_part_details' movie.movie_part.id %}" class="text-decoration-none text-dark">
+                      <div class="card big-item">
+                        <img src="{{ movie.movie_part.thumbnail.url }}" class="card-img-top" height="200rem" alt="{{ movie.movie_part.title }}" />
+                        <div class="card-body">
+                          <div class="card-title">{{ movie.movie_part.title }}</div>
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+                {% endfor %}
+              </div>
+        </div>
+    </div>
+    <div class="tab-pane fade" id="nav-series" role="tabpanel" aria-labelledby="nav-series-tab" tabindex="0">
+        <div class="container my-2">
+            <div class="row row-cols-1 row-cols-md-2 row-cols-md-3 row-cols-md-4 g-5">
+                {% for series in favourite_series %}
+                  <div class="col">
+                    <a href="{% url 'subscriber:series_details' series.series.id %}" class="text-decoration-none text-dark">
+                      <div class="card big-item">
+                        <img src="{{ series.series.image.url }}" class="card-img-top" height="200rem" alt="{{ series.series.title }}" />
+                        <div class="card-body">
+                          <div class="card-title">{{ series.series.title }}</div>
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+                {% endfor %}
+              </div>
+        </div>
+    </div>
+  </div>
+{% endblock %}

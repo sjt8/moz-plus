@@ -1,0 +1,23 @@
+<div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark sticky-top" style="width: 280px;">
+    <div class="mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+        <span class="fs-5">Manage</span>
+    </div>
+    <hr>
+    {% for menu in menus %}
+    <ul class="nav nav-pills flex-column mb-auto">
+        {% if menu == active %}
+        <li class="nav-item">
+            <a href="?active={{menu}}" class="nav-link active" aria-current="page">
+                {{menu}}
+            </a>
+        </li>
+        {% else %}
+        <li class="nav-item">
+            <a href="?active={{menu}}" class="nav-link text-white">
+                {{menu}}
+            </a>
+        </li>
+        {% endif %}
+    </ul>
+    {% endfor %}
+</div>

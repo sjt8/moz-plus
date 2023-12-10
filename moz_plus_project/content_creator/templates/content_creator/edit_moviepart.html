@@ -1,0 +1,18 @@
+{% extends 'home/base.html' %}
+
+{% block title %}
+  <title>Edit Movie</title>
+{% endblock %}
+{% load crispy_forms_tags %}
+
+{% block body %}
+  <div class="container my-3">
+    <h4>Movies</h4>
+    <hr/>
+    <form action="" method="POST" enctype="multipart/form-data" novalidate>
+      {% csrf_token %}
+      {{ edit_moviepart_form|crispy }}
+      <input type="submit" value="Update" class="btn btn-success" />
+    </form>
+  </div>
+{% endblock %}

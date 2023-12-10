@@ -1,0 +1,139 @@
+{% extends 'home/base.html' %}
+
+{% load crispy_forms_tags %}
+{% block body %}
+  {% include 'home/navbar.html' %}
+  <div class="container">
+    <div class="card bg-secondary">
+      <img src="{{ content_movies_part.thumbnail.url }}" class="rounded" alt="{{ content_movies_part.slug }}" width="250px" />
+      <div class="card-img-overlay" style="background-color: rgba(0, 0, 0, 0.6);">
+        <div class="row text-light h-100">
+          <div class="col-6">
+            <div class="fs-2 fw-bold">{{ content_movies_part.title }}</div>
+          </div>
+          <div class="col-6">
+            <div class="d-flex flex-column justify-content-around h-100">
+              <div class="row">
+                <div class="col">
+                  <div class="fs-5">Release Date</div>
+                </div>
+                <div class="col">
+                  <div class="fs-6">{{ content_movies_part.release_date }}</div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <div class="fs-5">Duration</div>
+                </div>
+                <div class="col">
+                  <div class="fs-6">{{ content_movies_part.duration }}</div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <div class="fs-5">Content Rating</div>
+                </div>
+                <div class="col">
+                  <div class="fs-6">{{ content_movies_part.content_rating }}</div>
+                </div>
+              </div>
+              <form action="" method="POST">
+                {% csrf_token %}
+                <div class="row">
+                  <div class="col">
+                    <label for="{{ rating_form.rating.id_for_label }}" class="form-label requiredField fs-5">Rating</label>
+                  </div>
+                  <div class="col">
+                    <select name="{{ rating_form.rating.name }}" id="{{ rating_form.rating.id_for_label }}" class="form-select w-50" onchange="this.form.submit()">
+                      {% for option in rating_form.rating.subwidgets %}
+                        {{ option }}
+                      {% endfor %}
+                    </select>
+                  </div>
+                </div>
+              </form>
+              <div class="row">
+                <div class="col">
+                  <div class="fs-5">Favourite</div>
+                </div>
+                <div class="col">
+                  <form action="" method="POST">
+                    {% csrf_token %}
+                    <button class="btn" type="submit" name="favourite">
+                      {% if favourite %}
+                        <i class="bi bi-star-fill fs-2 text-warning"></i>
+                      {% else %}
+                        <i class="bi bi-star fs-2 text-warning"></i>
+                      {% endif %}
+                    </button>
+                  </form>
+                </div>
+              </div>
+              <a href="{{ content_movies_part.video.url }}" class="btn btn-primary"><i class="bi bi-play-btn fs-4"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card text-dark my-4">
+      <div class="card-body">
+        <div class="row">
+          <div class="col">
+            <div class="card-text fs-4 fw-bold">Plot</div>
+            <p class="card-text">{{ content_movies_part.plot }}</p>
+          </div>
+          <div class="col">
+            <div class="row mb-2">
+              <div class="col-4">
+                <div class="card-text fs- fw-bold">Genre</div>
+              </div>
+              <div class="col-8">
+                {% for genre in content_movies_part.genre.all %}
+                  <span class="badge rounded-pill bg-primary my-1 p-2">{{ genre.name }}</span>
+                {% endfor %}
+              </div>
+            </div>
+            <div class="row mb-2">
+              <div class="col-4">
+                <div class="card-text fs- fw-bold">Studio</div>
+              </div>
+              <div class="col-8">
+                <div class="row">
+                  <div class="col-3">
+                    <img src="{{ content_movies_part.studio.image.url }}" alt="" width="48" height="48" class="rounded-circle me-2" />
+                  </div>
+                  <div class="col-9">{{ content_movies_part.studio.name }}</div>
+                </div>
+              </div>
+            </div>
+            <div class="row mb-2">
+              <div class="col-4">
+                <div class="card-text fs- fw-bold">Cast &amp; Crew</div>
+              </div>
+              <div class="col-8">
+                {% for person in content_movies_part.person.all %}
+                  <div class="row">
+                    <div class="col">{{ person.show_person.first_name }} {{ person.show_person.last_name }}</div>
+                    <div class="col">{{ person.role.name }}</div>
+                  </div>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="my-2">
+      <div class="fs-2 fw-bold">Trailers</div>
+      <div class="d-flex flex-row flex-nowrap overflow-auto">
+        {% for trailer in content_movie_trailer %}
+          <div class="embed-responsive embed-responsive-4by3">
+            <iframe src="{{ trailer.url }}" class="embed-responsive-item mx-2" title="YouTube video" allowfullscreen></iframe>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+{% endblock %}

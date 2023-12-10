@@ -24,7 +24,7 @@ class ContentRating(models.Model):
     age = models.PositiveSmallIntegerField()
 
     def __str__(self):
-        return f'{self.name}: {self.age}'
+        return self.name
 
 
 class Genre(models.Model):
@@ -45,7 +45,7 @@ class ShowRole(models.Model):
 
 class Studio(models.Model):
     name = models.CharField(max_length=150)
-    image = models.ImageField(upload_to='super_admin/studio/images')
+    image = models.ImageField(upload_to="super_admin/studio/images")
     country = models.ForeignKey(Country, on_delete=models.CASCADE)
     created_date = models.DateTimeField(auto_now_add=True)
 

@@ -1,0 +1,85 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        {% load static %}
+        {% if request.user.is_authenticated and request.user.groups.all.0.name == 'subscriber' %}
+        <a class="navbar-brand" href="{% url 'subscriber:subscriber' %}">
+            <img src="{% static 'images/mozlogo.svg' %}" alt="Moz Logo" width="92"/>
+        </a>
+        {% elif request.user.is_authenticated and request.user.groups.all.0.name == 'content_creator' %}
+        <a class="navbar-brand" href="{% url 'content_creator:content_creator' %}">
+            <img src="{% static 'images/mozlogo.svg' %}" alt="Moz Logo" width="92"/>
+        </a>
+        {% else %}
+        <a class="navbar-brand" href="{% url 'home:home' %}">
+            <img src="{% static 'images/mozlogo.svg' %}" alt="Moz Logo" width="92"/>
+        </a>
+        {% endif %}
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            {% if request.user.is_authenticated and request.user.groups.all.0.name == 'subscriber' %}
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'subscriber:series' %}">TV Shows</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'subscriber:movies' %}">Movies</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'subscriber:favourites' %}">Favourites</a>
+                </li>
+            </ul>
+            {% elif request.user.is_authenticated and request.user.groups.all.0.name == 'content_creator' %}
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'content_creator:series' %}">TV Shows</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'content_creator:movies' %}">Movies</a>
+                </li>
+            </ul>
+            {% else %}
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'home:series' %}">TV Shows</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'home:movies' %}">Movies</a>
+                </li>
+            </ul>
+            {% endif %}
+
+            {% if request.user.is_authenticated %}
+            <form class="d-flex">
+                <input class="form-control me-2" type="search" name="search" placeholder="Search" aria-label="Search" />
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+            <div class="dropdown m-2" style="width: 150px;">
+                <div class="d-flex justify-content-end text-white text-decoration-none dropdown-toggle"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                    <img src="{{ moz_user.image.url }}" alt="" width="32" height="32"
+                        class="rounded-circle me-2" />
+                    <strong>{{ request.user.username }}</strong>
+                </div>
+                <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1" style="">
+                    <li>
+                        <a class="dropdown-item" href="#">Profile</a>
+                    </li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="{% url 'home:logout' %}">Log out</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="me-2"></div>
+            {% else %}
+            <a class="btn btn-danger nav-link text-white" href="{% url 'home:login' %}">Login</a>
+            {% endif %}
+        </div>
+    </div>
+</nav>

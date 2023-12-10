@@ -1,0 +1,36 @@
+{% extends 'home/base.html' %}
+
+{% block body %}
+  {% include 'home/navbar.html' %}
+
+  <div class="row justify-content-between mx-2 vw-75">
+    <div class="col-auto">
+      <h4>Movies:</h4>
+    </div>
+    <div class="col-auto">
+      <a href="{% url 'content_creator:add_movies' %}" class="btn btn-danger">Add</a>
+    </div>
+  </div>
+  <div class="container my-2">
+    {% regroup content_movies|dictsortreversed:'updated_date' by updated_date|date:'Y M' as movie_list %}
+    {% for movies in movie_list %}
+      <div class="card mt-4 mb-2 p-2 text-dark text-center">
+        <div class="fs-4 fw-bold">{{ movies.grouper }}</div>
+      </div>
+      <div class="row row-cols-1 row-cols-md-2 row-cols-md-3 row-cols-md-4">
+        {% for movie in movies.list %}
+          <div class="col">
+            <a href="{% url 'content_creator:movies_details' movie.id %}" class="text-decoration-none text-dark">
+              <div class="card my-2">
+                <img src="{{ movie.image.url }}" class="card-img-top" height="200rem" alt="{{ movie.title }}" />
+                <div class="card-body">
+                  <div class="card-title"> {{movie.title}}</div>
+                </div>
+              </div>
+            </a>
+          </div>
+        {% endfor %}
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}

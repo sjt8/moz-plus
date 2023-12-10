@@ -1,0 +1,39 @@
+{% extends 'home/base.html' %}
+
+{% block body %}
+  {% include 'home/navbar.html' %}
+  <div class="container">
+    <div class="card bg-secondary">
+      <img src="{{ content_movies.image.url }}" class="rounded" alt="{{ content_movies.slug }}" width="250px" />
+      <div class="card-img-overlay" style="background-color: rgba(0, 0, 0, 0.6);">
+        <div class="row justify-content-between h-100">
+          <h5 class="card-title fs-2">{{ content_movies.title }}</h5>
+          <p class="card-text">{{ content_movies.overview }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="container my-4">
+      <div class="d-flex flex-row flex-nowrap overflow-auto">
+        {% for movie_part in content_movies_part %}
+          <div class="card mx-4" style="width: 22rem;">
+            <div class="row g-0">
+              <div class="col">
+                <a href="{% url 'subscriber:movie_part_details' movie_part.id %}" class="text-decoration-none text-dark"><img src="{{ movie_part.thumbnail.url }}" class="card-img-top" alt="{{ movie_part.slug }}" /></a>
+              </div>
+              <div class="col">
+                <div class="card-body text-dark">
+                  <div class="d-flex flex-column justify-content-between" style="height: 14rem;">
+                    <div class="card-title">{{ movie_part.title|slice:'20' }}</div>
+                    <div class="card-text">Ratings: {{ movie_part.average_rating }}</div>
+                    <a href="{{ movie_part.video.url }}" class="btn btn-primary"><i class="bi bi-play-btn"></i></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+{% endblock %}
